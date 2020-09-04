@@ -1,5 +1,3 @@
-# react-date-and-time-picker
-
 ## Installation
 
 Using npm or yarn:
