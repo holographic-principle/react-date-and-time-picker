@@ -4,9 +4,13 @@
 
 Using npm or yarn:
 ```shell
-$ npm i react-date-and-time-picker
-
-$ yarn add react-date-and-time-picker
+$ npm i @holographic-principle/react-datetime-picker
+$ yarn add @holographic-principle/react-datetime-picker
 ```
 
-[Live example](https://chriskr.github.io/react-date-and-time-picker/example/build/)
+## Releasing
+
+```shell
+$ yarn build:prod
+$ yarn publish
+```
