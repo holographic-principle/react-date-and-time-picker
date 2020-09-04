@@ -1,9 +1,9 @@
 html,
 body {
-  background-image: url(logo.svg), url(bg.svg);
-  background-position: bottom 15vh right 15vh, 0 0;
+  background-image: url(bg.svg);
+  background-position: 0 0;
   background-repeat: no-repeat;
-  background-size:9vh 9vh, 100% 100%;
+  background-size: 100% 100%;
   color: white;
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;

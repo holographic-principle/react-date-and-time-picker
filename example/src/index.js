@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import DateTimePicker from 'react-date-and-time-picker';
-import 'react-date-and-time-picker/dist/main.css';
+import DateTimePicker from '@holographic-principle/react-datetime-picker';
+import '@holographic-principle/react-datetime-picker/dist/main.css';
 import './style.css';
 
 const input = document.querySelector('input');
