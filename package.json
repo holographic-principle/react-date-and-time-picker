@@ -1,11 +1,11 @@
 {
-  "name": "react-date-and-time-picker",
-  "version": "1.3.7",
+  "name": "@holographic-principle/react-datetime-picker",
+  "version": "0.0.0",
   "description": "React component to pick date and time (with material design icons).",
-  "repository": "https://github.com/chriskr/react-date-and-time-picker",
-  "homepage": "https://chriskr.github.io/react-date-and-time-picker/example/build/",
+  "repository": "https://github.com/holographic-principle/react-date-and-time-picker",
+  "homepage": "https://github.com/holographic-principle/react-date-and-time-picker",
   "main": "index.js",
-  "author": "chriskr",
+  "author": "holographic-principle",
   "license": "Apache-2.0",
   "keywords": [
     "calendar",
