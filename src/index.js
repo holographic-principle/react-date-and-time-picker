@@ -39,7 +39,6 @@ const {
   ICON_CHEVRON_LEFT,
   ICON_CHEVRON_RIGHT,
   MATERIAL_ICONS,
-  MATERIAL_ICONS_ROUND,
 } = classNames;
 
 const targetManager = new TargetManager({
@@ -88,12 +87,14 @@ const getLineHeight = (() => {
   };
 })();
 
-const Footer = ({ mode }) => {
+const Footer = ({ mode, useTimePicker }) => {
   return (
     <div className={FOOTER_ROW}>
-      <span className={classes(HOVER_SPAN, SELECT_TIME)}>
-        { mode === TIME ? 'Date' : 'Time' }
-      </span>
+      {useTimePicker && (
+        <span className={classes(HOVER_SPAN, SELECT_TIME)}>
+          { mode === TIME ? 'Date' : 'Time' }
+        </span>
+      )}
       <span className={classes(HOVER_SPAN, SELECT_TODAY)}>
         Today
       </span>
@@ -356,7 +357,7 @@ class DateTimePicker extends React.Component {
         <Time
           hours={this.props.date.getHours()}
           minutes={this.props.date.getMinutes()}
-          useRoundMaterialIcons={this.props.useRoundMaterialIcons}
+          config={this.props.config}
         />
       );
     default:
@@ -372,6 +373,10 @@ class DateTimePicker extends React.Component {
       month: this.props.date.getMonth(),
       day: this.props.date.getDate(),
     };
+    const config = this.props.config;
+    const materialIconsClass = config && config.materialIconsClass ?
+      config.materialIconsClass :
+      MATERIAL_ICONS;
     return (
       <div className={ROOT}
         onClick={this.onClick}
@@ -379,12 +384,7 @@ class DateTimePicker extends React.Component {
       >
         <div className={HEADER_ROW}>
           <span className={classes(HOVER_SPAN, PREVIOUS_MONTH)}>
-            <i className={classes(
-              MATERIAL_ICONS,
-              this.props.useRoundMaterialIcons && MATERIAL_ICONS_ROUND,
-              ICON_CHEVRON_LEFT
-            )}
-            />
+            <i className={classes(materialIconsClass, ICON_CHEVRON_LEFT)}/>
           </span>
           <span className={FILLER}/>
           <span className={classes(HOVER_SPAN, HEADER_MONTH,
@@ -399,12 +399,7 @@ class DateTimePicker extends React.Component {
           </span>
           <span className={FILLER}/>
           <span className={classes(HOVER_SPAN, NEXT_MONTH)}>
-            <i className={classes(
-              MATERIAL_ICONS,
-              this.props.useRoundMaterialIcons && MATERIAL_ICONS_ROUND,
-              ICON_CHEVRON_RIGHT
-            )}
-            />
+            <i className={classes(materialIconsClass, ICON_CHEVRON_RIGHT)}/>
           </span>
         </div>
         <div ref={div => {this._pickerBody = div;}}
@@ -412,7 +407,10 @@ class DateTimePicker extends React.Component {
         >
           {this.getBody(year, month, selected)}
         </div>
-        <Footer mode={this.state.mode} />
+        <Footer
+          mode={this.state.mode}
+          useTimePicker={Boolean(config && config.useTimePicker)}
+        />
       </div>
     );
   }
@@ -421,7 +419,7 @@ class DateTimePicker extends React.Component {
 DateTimePicker.propTypes = {
   date: PropTypes.instanceOf(Date),
   onChange: PropTypes.func,
-  useRoundMaterialIcons: PropTypes.bool,
+  config: PropTypes.object,
 };
 
 export default DateTimePicker;

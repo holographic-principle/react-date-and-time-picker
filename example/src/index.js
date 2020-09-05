@@ -12,6 +12,10 @@ const renderPicker = () => {
   const picker = React.createElement(DateTimePicker, {
     date,
     onChange,
+    config: {
+      materialIconsClass: 'material-icons material-icons-round',
+      useTimePicker: true,
+    }
   });
   ReactDOM.render(picker, pickerContainer);
 };

@@ -15,27 +15,16 @@ const {
   ICON_EXPAND_LESS,
   ICON_EXPAND_MORE,
   MATERIAL_ICONS,
-  MATERIAL_ICONS_ROUND,
   DIGITS,
 } = classNames;
 
-const Controls = ({next, previous, useRoundMaterialIcons}) =>
+const Controls = ({next, previous, materialIconsClass}) =>
   <div className={TIME_CONTROLS}>
     <span className={classes(HOVER_SPAN, previous)}>
-      <i className={classes(
-        MATERIAL_ICONS,
-        useRoundMaterialIcons && MATERIAL_ICONS_ROUND,
-        ICON_EXPAND_LESS
-      )}
-      />
+      <i className={classes(materialIconsClass, ICON_EXPAND_LESS)} />
     </span>
     <span className={classes(HOVER_SPAN, next)}>
-      <i className={classes(
-        MATERIAL_ICONS,
-        useRoundMaterialIcons && MATERIAL_ICONS_ROUND,
-        ICON_EXPAND_MORE
-      )}
-      />
+      <i className={classes(materialIconsClass, ICON_EXPAND_MORE)} />
     </span>
   </div>
 ;
@@ -43,16 +32,19 @@ const Controls = ({next, previous, useRoundMaterialIcons}) =>
 Controls.propTypes = {
   next: PropTypes.string,
   previous: PropTypes.string,
-  useRoundMaterialIcons: PropTypes.bool,
+  materialIconsClass: PropTypes.string,
 };
 
-const Time = ({hours, minutes, useRoundMaterialIcons}) => {
+const Time = ({hours, minutes, config}) => {
+  const materialIconsClass = config && config.materialIconsClass ?
+    config.materialIconsClass :
+    MATERIAL_ICONS;
   return (
     <div className={TIME_CONTAINER}>
       <Controls
         previous={PREVIOUS_HOUR}
         next={NEXT_HOUR}
-        useRoundMaterialIcons={useRoundMaterialIcons}
+        materialIconsClass={materialIconsClass}
       />
       <svg viewBox="0 0 140 51"
         width="140px"
@@ -80,7 +72,7 @@ const Time = ({hours, minutes, useRoundMaterialIcons}) => {
       <Controls
         previous={PREVIOUS_MINUTE}
         next={NEXT_MINUTE}
-        useRoundMaterialIcons={useRoundMaterialIcons}
+        materialIconsClass={materialIconsClass}
       />
     </div>
   );
@@ -89,7 +81,7 @@ const Time = ({hours, minutes, useRoundMaterialIcons}) => {
 Time.propTypes = {
   hours: PropTypes.number,
   minutes: PropTypes.number,
-  useRoundMaterialIcons: PropTypes.bool,
+  config: PropTypes.object,
 };
 
 export default Time;

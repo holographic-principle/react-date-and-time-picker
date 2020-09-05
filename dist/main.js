@@ -142,7 +142,6 @@ exports.default = {
   ICON_EXPAND_LESS: 'dtp-icon-expand-less',
   ICON_EXPAND_MORE: 'dtp-icon-expand-more',
   MATERIAL_ICONS: 'material-icons',
-  MATERIAL_ICONS_ROUND: 'material-icons-round',
   TRANSPARENT: 'dtp-transparent'
 };
 
@@ -396,8 +395,7 @@ var ROOT = _classNames2.default.ROOT,
     FILLER = _classNames2.default.FILLER,
     ICON_CHEVRON_LEFT = _classNames2.default.ICON_CHEVRON_LEFT,
     ICON_CHEVRON_RIGHT = _classNames2.default.ICON_CHEVRON_RIGHT,
-    MATERIAL_ICONS = _classNames2.default.MATERIAL_ICONS,
-    MATERIAL_ICONS_ROUND = _classNames2.default.MATERIAL_ICONS_ROUND;
+    MATERIAL_ICONS = _classNames2.default.MATERIAL_ICONS;
 
 
 var targetManager = new _utils.TargetManager({
@@ -426,12 +424,13 @@ var getLineHeight = function () {
 }();
 
 var Footer = function Footer(_ref) {
-  var mode = _ref.mode;
+  var mode = _ref.mode,
+      useTimePicker = _ref.useTimePicker;
 
   return _react2.default.createElement(
     'div',
     { className: FOOTER_ROW },
-    _react2.default.createElement(
+    useTimePicker && _react2.default.createElement(
       'span',
       { className: (0, _utils.classes)(HOVER_SPAN, SELECT_TIME) },
       mode === TIME ? 'Date' : 'Time'
@@ -728,7 +727,7 @@ var DateTimePicker = function (_React$Component) {
           return _react2.default.createElement(_time2.default, {
             hours: this.props.date.getHours(),
             minutes: this.props.date.getMinutes(),
-            useRoundMaterialIcons: this.props.useRoundMaterialIcons
+            config: this.props.config
           });
         default:
 
@@ -746,6 +745,8 @@ var DateTimePicker = function (_React$Component) {
         month: this.props.date.getMonth(),
         day: this.props.date.getDate()
       };
+      var config = this.props.config;
+      var materialIconsClass = config && config.materialIconsClass ? config.materialIconsClass : MATERIAL_ICONS;
       return _react2.default.createElement(
         'div',
         { className: ROOT,
@@ -758,8 +759,7 @@ var DateTimePicker = function (_React$Component) {
           _react2.default.createElement(
             'span',
             { className: (0, _utils.classes)(HOVER_SPAN, PREVIOUS_MONTH) },
-            _react2.default.createElement('i', { className: (0, _utils.classes)(MATERIAL_ICONS, this.props.useRoundMaterialIcons && MATERIAL_ICONS_ROUND, ICON_CHEVRON_LEFT)
-            })
+            _react2.default.createElement('i', { className: (0, _utils.classes)(materialIconsClass, ICON_CHEVRON_LEFT) })
           ),
           _react2.default.createElement('span', { className: FILLER }),
           _react2.default.createElement(
@@ -778,8 +778,7 @@ var DateTimePicker = function (_React$Component) {
           _react2.default.createElement(
             'span',
             { className: (0, _utils.classes)(HOVER_SPAN, NEXT_MONTH) },
-            _react2.default.createElement('i', { className: (0, _utils.classes)(MATERIAL_ICONS, this.props.useRoundMaterialIcons && MATERIAL_ICONS_ROUND, ICON_CHEVRON_RIGHT)
-            })
+            _react2.default.createElement('i', { className: (0, _utils.classes)(materialIconsClass, ICON_CHEVRON_RIGHT) })
           )
         ),
         _react2.default.createElement(
@@ -791,7 +790,10 @@ var DateTimePicker = function (_React$Component) {
           },
           this.getBody(year, month, selected)
         ),
-        _react2.default.createElement(Footer, { mode: this.state.mode })
+        _react2.default.createElement(Footer, {
+          mode: this.state.mode,
+          useTimePicker: Boolean(config && config.useTimePicker)
+        })
       );
     }
   }]);
@@ -802,7 +804,7 @@ var DateTimePicker = function (_React$Component) {
 DateTimePicker.propTypes = {
   date: _propTypes2.default.instanceOf(Date),
   onChange: _propTypes2.default.func,
-  useRoundMaterialIcons: _propTypes2.default.bool
+  config: _propTypes2.default.object
 };
 
 exports.default = DateTimePicker;
@@ -1245,28 +1247,25 @@ var TIME_CONTAINER = _classNames2.default.TIME_CONTAINER,
     ICON_EXPAND_LESS = _classNames2.default.ICON_EXPAND_LESS,
     ICON_EXPAND_MORE = _classNames2.default.ICON_EXPAND_MORE,
     MATERIAL_ICONS = _classNames2.default.MATERIAL_ICONS,
-    MATERIAL_ICONS_ROUND = _classNames2.default.MATERIAL_ICONS_ROUND,
     DIGITS = _classNames2.default.DIGITS;
 
 
 var Controls = function Controls(_ref) {
   var next = _ref.next,
       previous = _ref.previous,
-      useRoundMaterialIcons = _ref.useRoundMaterialIcons;
+      materialIconsClass = _ref.materialIconsClass;
   return _react2.default.createElement(
     'div',
     { className: TIME_CONTROLS },
     _react2.default.createElement(
       'span',
       { className: (0, _utils.classes)(HOVER_SPAN, previous) },
-      _react2.default.createElement('i', { className: (0, _utils.classes)(MATERIAL_ICONS, useRoundMaterialIcons && MATERIAL_ICONS_ROUND, ICON_EXPAND_LESS)
-      })
+      _react2.default.createElement('i', { className: (0, _utils.classes)(materialIconsClass, ICON_EXPAND_LESS) })
     ),
     _react2.default.createElement(
       'span',
       { className: (0, _utils.classes)(HOVER_SPAN, next) },
-      _react2.default.createElement('i', { className: (0, _utils.classes)(MATERIAL_ICONS, useRoundMaterialIcons && MATERIAL_ICONS_ROUND, ICON_EXPAND_MORE)
-      })
+      _react2.default.createElement('i', { className: (0, _utils.classes)(materialIconsClass, ICON_EXPAND_MORE) })
     )
   );
 };
@@ -1274,21 +1273,22 @@ var Controls = function Controls(_ref) {
 Controls.propTypes = {
   next: _propTypes2.default.string,
   previous: _propTypes2.default.string,
-  useRoundMaterialIcons: _propTypes2.default.bool
+  materialIconsClass: _propTypes2.default.string
 };
 
 var Time = function Time(_ref2) {
   var hours = _ref2.hours,
       minutes = _ref2.minutes,
-      useRoundMaterialIcons = _ref2.useRoundMaterialIcons;
+      config = _ref2.config;
 
+  var materialIconsClass = config && config.materialIconsClass ? config.materialIconsClass : MATERIAL_ICONS;
   return _react2.default.createElement(
     'div',
     { className: TIME_CONTAINER },
     _react2.default.createElement(Controls, {
       previous: PREVIOUS_HOUR,
       next: NEXT_HOUR,
-      useRoundMaterialIcons: useRoundMaterialIcons
+      materialIconsClass: materialIconsClass
     }),
     _react2.default.createElement(
       'svg',
@@ -1326,7 +1326,7 @@ var Time = function Time(_ref2) {
     _react2.default.createElement(Controls, {
       previous: PREVIOUS_MINUTE,
       next: NEXT_MINUTE,
-      useRoundMaterialIcons: useRoundMaterialIcons
+      materialIconsClass: materialIconsClass
     })
   );
 };
@@ -1334,7 +1334,7 @@ var Time = function Time(_ref2) {
 Time.propTypes = {
   hours: _propTypes2.default.number,
   minutes: _propTypes2.default.number,
-  useRoundMaterialIcons: _propTypes2.default.bool
+  config: _propTypes2.default.object
 };
 
 exports.default = Time;

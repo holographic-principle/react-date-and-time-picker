@@ -39,6 +39,5 @@ export default {
   ICON_EXPAND_LESS: 'dtp-icon-expand-less',
   ICON_EXPAND_MORE: 'dtp-icon-expand-more',
   MATERIAL_ICONS: 'material-icons',
-  MATERIAL_ICONS_ROUND: 'material-icons-round',
   TRANSPARENT: 'dtp-transparent',
 };
