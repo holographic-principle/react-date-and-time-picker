@@ -103,6 +103,61 @@ class DateTimePicker extends React.Component {
     this._deltaY = 0;
   }
 
+  modifyMonthByDelta(delta) {
+    const date = new Date(this.props.date);
+    this.setMonth(date, date.getMonth() + delta);
+    this.props.onChange(date);
+  }
+
+  modifyYearByDelta(delta) {
+    this.setState(
+      (prevState) => ({deltaYear: prevState.deltaYear + delta}));
+  }
+
+  modifyMinutesByDelta(delta) {
+    const date = new Date(this.props.date);
+    let minutes = date.getMinutes();
+    if (minutes % 15 !== 0) {
+      minutes = Math.round(minutes / 15) * 15;
+    }
+    date.setMinutes(minutes + delta);
+    this.props.onChange(date);
+  }
+
+  showPreviousMonth() {
+    if (this.state.mode === DAYS) {
+      const delta = -1;
+      this.modifyMonthByDelta(delta);
+      return;
+    }
+    if (this.state.mode === YEARS) {
+      const delta = -9;
+      this.modifyYearByDelta(delta);
+      return;
+    }
+    if (this.state.mode === TIME) {
+      const delta = -15;
+      this.modifyMinutesByDelta(delta);
+    }
+  }
+
+  showNextMonth() {
+    if (this.state.mode === DAYS) {
+      const delta = 1;
+      this.modifyMonthByDelta(delta);
+      return;
+    }
+    if (this.state.mode === YEARS) {
+      const delta = 9;
+      this.modifyYearByDelta(delta);
+      return;
+    }
+    if (this.state.mode === TIME) {
+      const delta = 15;
+      this.modifyMinutesByDelta(delta);
+    }
+  }
+
   onClick (event) {
     const {target, className} = targetManager.getTarget(event);
 
@@ -116,39 +171,11 @@ class DateTimePicker extends React.Component {
     }
 
     case NEXT_MONTH:
-    case PREVIOUS_MONTH: {
-      switch (this.state.mode) {
-      case DAYS: {
-        const delta = className === PREVIOUS_MONTH ? -1 : 1;
-        const date = new Date(this.props.date);
-        this.setMonth(date, date.getMonth() + delta);
-        this.props.onChange(date);
-        break;
-      }
-
-      case YEARS: {
-        const delta = className === PREVIOUS_MONTH ? -9 : 9;
-        this.setState(
-          (prevState) => ({deltaYear: prevState.deltaYear + delta}));
-        break;
-      }
-
-      case TIME: {
-        const delta = className === PREVIOUS_MONTH ? -15 : 15;
-        const date = new Date(this.props.date);
-        let minutes = date.getMinutes();
-        if (minutes % 15 !== 0) {
-          minutes = Math.round(minutes / 15) * 15;
-        }
-        date.setMinutes(minutes + delta);
-        this.props.onChange(date);
-        break;
-      }
-
-      default:
-      }
+      this.showNextMonth();
       break;
-    }
+    case PREVIOUS_MONTH:
+      this.showPreviousMonth();
+      break;
 
     case HEADER_MONTH:
       this.setState(

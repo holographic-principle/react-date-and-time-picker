@@ -447,6 +447,67 @@ var DateTimePicker = function (_React$Component) {
   }
 
   _createClass(DateTimePicker, [{
+    key: 'modifyMonthByDelta',
+    value: function modifyMonthByDelta(delta) {
+      var date = new Date(this.props.date);
+      this.setMonth(date, date.getMonth() + delta);
+      this.props.onChange(date);
+    }
+  }, {
+    key: 'modifyYearByDelta',
+    value: function modifyYearByDelta(delta) {
+      this.setState(function (prevState) {
+        return { deltaYear: prevState.deltaYear + delta };
+      });
+    }
+  }, {
+    key: 'modifyMinutesByDelta',
+    value: function modifyMinutesByDelta(delta) {
+      var date = new Date(this.props.date);
+      var minutes = date.getMinutes();
+      if (minutes % 15 !== 0) {
+        minutes = Math.round(minutes / 15) * 15;
+      }
+      date.setMinutes(minutes + delta);
+      this.props.onChange(date);
+    }
+  }, {
+    key: 'showPreviousMonth',
+    value: function showPreviousMonth() {
+      if (this.state.mode === DAYS) {
+        var delta = -1;
+        this.modifyMonthByDelta(delta);
+        return;
+      }
+      if (this.state.mode === YEARS) {
+        var _delta = -9;
+        this.modifyYearByDelta(_delta);
+        return;
+      }
+      if (this.state.mode === TIME) {
+        var _delta2 = -15;
+        this.modifyMinutesByDelta(_delta2);
+      }
+    }
+  }, {
+    key: 'showNextMonth',
+    value: function showNextMonth() {
+      if (this.state.mode === DAYS) {
+        var delta = 1;
+        this.modifyMonthByDelta(delta);
+        return;
+      }
+      if (this.state.mode === YEARS) {
+        var _delta3 = 9;
+        this.modifyYearByDelta(_delta3);
+        return;
+      }
+      if (this.state.mode === TIME) {
+        var _delta4 = 15;
+        this.modifyMinutesByDelta(_delta4);
+      }
+    }
+  }, {
     key: 'onClick',
     value: function onClick(event) {
       var _targetManager$getTar = targetManager.getTarget(event),
@@ -464,44 +525,11 @@ var DateTimePicker = function (_React$Component) {
           }
 
         case NEXT_MONTH:
+          this.showNextMonth();
+          break;
         case PREVIOUS_MONTH:
-          {
-            switch (this.state.mode) {
-              case DAYS:
-                {
-                  var delta = className === PREVIOUS_MONTH ? -1 : 1;
-                  var _date = new Date(this.props.date);
-                  this.setMonth(_date, _date.getMonth() + delta);
-                  this.props.onChange(_date);
-                  break;
-                }
-
-              case YEARS:
-                {
-                  var _delta = className === PREVIOUS_MONTH ? -9 : 9;
-                  this.setState(function (prevState) {
-                    return { deltaYear: prevState.deltaYear + _delta };
-                  });
-                  break;
-                }
-
-              case TIME:
-                {
-                  var _delta2 = className === PREVIOUS_MONTH ? -15 : 15;
-                  var _date2 = new Date(this.props.date);
-                  var minutes = _date2.getMinutes();
-                  if (minutes % 15 !== 0) {
-                    minutes = Math.round(minutes / 15) * 15;
-                  }
-                  _date2.setMinutes(minutes + _delta2);
-                  this.props.onChange(_date2);
-                  break;
-                }
-
-              default:
-            }
-            break;
-          }
+          this.showPreviousMonth();
+          break;
 
         case HEADER_MONTH:
           this.setState(function (prevState) {
@@ -517,10 +545,10 @@ var DateTimePicker = function (_React$Component) {
 
         case SELECT_MONTH:
           {
-            var _date3 = new Date(this.props.date);
-            this.setMonth(_date3, Number.parseInt(target.dataset.month, 10));
+            var _date = new Date(this.props.date);
+            this.setMonth(_date, Number.parseInt(target.dataset.month, 10));
             this.setState({ mode: DAYS });
-            this.props.onChange(_date3);
+            this.props.onChange(_date);
             break;
           }
 
@@ -532,30 +560,30 @@ var DateTimePicker = function (_React$Component) {
 
         case SELECT_YEAR:
           {
-            var _date4 = new Date(this.props.date);
-            this.setYear(_date4, Number.parseInt(target.textContent, 10));
+            var _date2 = new Date(this.props.date);
+            this.setYear(_date2, Number.parseInt(target.textContent, 10));
             this.setState({ mode: DAYS, deltaYear: 0 });
-            this.props.onChange(_date4);
+            this.props.onChange(_date2);
             break;
           }
 
         case NEXT_HOUR:
         case PREVIOUS_HOUR:
           {
-            var _delta3 = className === PREVIOUS_HOUR ? -1 : 1;
-            var _date5 = new Date(this.props.date);
-            _date5.setHours(_date5.getHours() + _delta3);
-            this.props.onChange(_date5);
+            var delta = className === PREVIOUS_HOUR ? -1 : 1;
+            var _date3 = new Date(this.props.date);
+            _date3.setHours(_date3.getHours() + delta);
+            this.props.onChange(_date3);
             break;
           }
 
         case NEXT_MINUTE:
         case PREVIOUS_MINUTE:
           {
-            var _delta4 = className === PREVIOUS_MINUTE ? -1 : 1;
-            var _date6 = new Date(this.props.date);
-            _date6.setMinutes(_date6.getMinutes() + _delta4);
-            this.props.onChange(_date6);
+            var _delta5 = className === PREVIOUS_MINUTE ? -1 : 1;
+            var _date4 = new Date(this.props.date);
+            _date4.setMinutes(_date4.getMinutes() + _delta5);
+            this.props.onChange(_date4);
             break;
           }
 
@@ -595,12 +623,12 @@ var DateTimePicker = function (_React$Component) {
         case TIME:
           {
             var box = this._pickerBody.getBoundingClientRect();
-            var _delta5 = event.deltaY > 0 ? 1 : -1;
+            var _delta6 = event.deltaY > 0 ? 1 : -1;
             var date = new Date(this.props.date);
             if (event.clientX < box.left + box.width / 2) {
-              date.setHours(date.getHours() + _delta5);
+              date.setHours(date.getHours() + _delta6);
             } else {
-              date.setMinutes(date.getMinutes() + _delta5);
+              date.setMinutes(date.getMinutes() + _delta6);
             }
             this.props.onChange(date);
             break;
