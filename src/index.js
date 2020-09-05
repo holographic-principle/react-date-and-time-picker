@@ -91,10 +91,15 @@ const getLineHeight = (() => {
 class DateTimePicker extends React.Component {
   constructor (props) {
     super(props);
+    const startDate = new Date(this.props.date);
+    const displayMonth = startDate.getMonth();
+    const displayYear = startDate.getFullYear();
     this.state = {
       mode: DAYS,
       deltaYear: 0,
-      startDate: new Date(this.props.date),
+      startDate,
+      displayMonth,
+      displayYear,
       selectedDate: this.props.date.getDate(),
     };
     this.onClick = this.onClick.bind(this);
@@ -105,8 +110,12 @@ class DateTimePicker extends React.Component {
 
   modifyMonthByDelta(delta) {
     const date = new Date(this.props.date);
-    this.setMonth(date, date.getMonth() + delta);
-    this.props.onChange(date);
+    date.setFullYear(this.state.displayYear);
+    this.setMonth(date, this.state.displayMonth + delta);
+    this.setState({
+      displayMonth: date.getMonth(),
+      displayYear: date.getFullYear()
+    });
   }
 
   modifyYearByDelta(delta) {
@@ -164,6 +173,8 @@ class DateTimePicker extends React.Component {
     switch (className) {
     case SELECT_DAY: {
       const date = new Date(this.props.date);
+      date.setFullYear(this.state.displayYear);
+      date.setMonth(this.state.displayMonth);
       date.setDate(Number.parseInt(target.textContent, 10));
       this.setState({selectedDate: date.getDate()});
       this.props.onChange(date);
@@ -189,9 +200,9 @@ class DateTimePicker extends React.Component {
 
     case SELECT_MONTH: {
       const date = new Date(this.props.date);
+      date.setFullYear(this.state.displayYear);
       this.setMonth(date, Number.parseInt(target.dataset.month, 10));
-      this.setState({mode: DAYS});
-      this.props.onChange(date);
+      this.setState({mode: DAYS, displayMonth: date.getMonth()});
       break;
     }
 
@@ -202,9 +213,13 @@ class DateTimePicker extends React.Component {
 
     case SELECT_YEAR: {
       const date = new Date(this.props.date);
+      date.setMonth(this.state.displayMonth);
       this.setYear(date, Number.parseInt(target.textContent, 10));
-      this.setState({mode: DAYS, deltaYear: 0});
-      this.props.onChange(date);
+      this.setState({
+        mode: DAYS,
+        deltaYear: 0,
+        displayYear: date.getFullYear()
+      });
       break;
     }
 
@@ -334,9 +349,8 @@ class DateTimePicker extends React.Component {
   }
 
   render() {
-    const date = this.props.date;
-    const year = date.getFullYear();
-    const month = date.getMonth();
+    const year = this.state.displayYear;
+    const month = this.state.displayMonth;
     const selected = {
       year: this.props.date.getFullYear(),
       month: this.props.date.getMonth(),

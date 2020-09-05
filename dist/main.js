@@ -425,6 +425,30 @@ var getLineHeight = function () {
   };
 }();
 
+var Footer = function Footer(_ref) {
+  var mode = _ref.mode;
+
+  return _react2.default.createElement(
+    'div',
+    { className: FOOTER_ROW },
+    _react2.default.createElement(
+      'span',
+      { className: (0, _utils.classes)(HOVER_SPAN, SELECT_TIME) },
+      mode === TIME ? 'Date' : 'Time'
+    ),
+    _react2.default.createElement(
+      'span',
+      { className: (0, _utils.classes)(HOVER_SPAN, SELECT_TODAY) },
+      'Today'
+    ),
+    _react2.default.createElement(
+      'span',
+      { className: (0, _utils.classes)(HOVER_SPAN, CANCEL_CHANGES) },
+      'Clear'
+    )
+  );
+};
+
 var DateTimePicker = function (_React$Component) {
   _inherits(DateTimePicker, _React$Component);
 
@@ -433,10 +457,15 @@ var DateTimePicker = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (DateTimePicker.__proto__ || Object.getPrototypeOf(DateTimePicker)).call(this, props));
 
+    var startDate = new Date(_this.props.date);
+    var displayMonth = startDate.getMonth();
+    var displayYear = startDate.getFullYear();
     _this.state = {
       mode: DAYS,
       deltaYear: 0,
-      startDate: new Date(_this.props.date),
+      startDate: startDate,
+      displayMonth: displayMonth,
+      displayYear: displayYear,
       selectedDate: _this.props.date.getDate()
     };
     _this.onClick = _this.onClick.bind(_this);
@@ -450,8 +479,12 @@ var DateTimePicker = function (_React$Component) {
     key: 'modifyMonthByDelta',
     value: function modifyMonthByDelta(delta) {
       var date = new Date(this.props.date);
-      this.setMonth(date, date.getMonth() + delta);
-      this.props.onChange(date);
+      date.setFullYear(this.state.displayYear);
+      this.setMonth(date, this.state.displayMonth + delta);
+      this.setState({
+        displayMonth: date.getMonth(),
+        displayYear: date.getFullYear()
+      });
     }
   }, {
     key: 'modifyYearByDelta',
@@ -518,6 +551,8 @@ var DateTimePicker = function (_React$Component) {
         case SELECT_DAY:
           {
             var date = new Date(this.props.date);
+            date.setFullYear(this.state.displayYear);
+            date.setMonth(this.state.displayMonth);
             date.setDate(Number.parseInt(target.textContent, 10));
             this.setState({ selectedDate: date.getDate() });
             this.props.onChange(date);
@@ -546,9 +581,9 @@ var DateTimePicker = function (_React$Component) {
         case SELECT_MONTH:
           {
             var _date = new Date(this.props.date);
+            _date.setFullYear(this.state.displayYear);
             this.setMonth(_date, Number.parseInt(target.dataset.month, 10));
-            this.setState({ mode: DAYS });
-            this.props.onChange(_date);
+            this.setState({ mode: DAYS, displayMonth: _date.getMonth() });
             break;
           }
 
@@ -561,9 +596,13 @@ var DateTimePicker = function (_React$Component) {
         case SELECT_YEAR:
           {
             var _date2 = new Date(this.props.date);
+            _date2.setMonth(this.state.displayMonth);
             this.setYear(_date2, Number.parseInt(target.textContent, 10));
-            this.setState({ mode: DAYS, deltaYear: 0 });
-            this.props.onChange(_date2);
+            this.setState({
+              mode: DAYS,
+              deltaYear: 0,
+              displayYear: _date2.getFullYear()
+            });
             break;
           }
 
@@ -700,9 +739,8 @@ var DateTimePicker = function (_React$Component) {
     value: function render() {
       var _this2 = this;
 
-      var date = this.props.date;
-      var year = date.getFullYear();
-      var month = date.getMonth();
+      var year = this.state.displayYear;
+      var month = this.state.displayMonth;
       var selected = {
         year: this.props.date.getFullYear(),
         month: this.props.date.getMonth(),
@@ -753,25 +791,7 @@ var DateTimePicker = function (_React$Component) {
           },
           this.getBody(year, month, selected)
         ),
-        _react2.default.createElement(
-          'div',
-          { className: FOOTER_ROW },
-          _react2.default.createElement(
-            'span',
-            { className: (0, _utils.classes)(HOVER_SPAN, SELECT_TIME) },
-            this.state.mode === TIME ? 'Date' : 'Time'
-          ),
-          _react2.default.createElement(
-            'span',
-            { className: (0, _utils.classes)(HOVER_SPAN, SELECT_TODAY) },
-            'Today'
-          ),
-          _react2.default.createElement(
-            'span',
-            { className: (0, _utils.classes)(HOVER_SPAN, CANCEL_CHANGES) },
-            'Clear'
-          )
-        )
+        _react2.default.createElement(Footer, { mode: this.state.mode })
       );
     }
   }]);
