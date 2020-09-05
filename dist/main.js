@@ -139,10 +139,6 @@ exports.default = {
   ICON_CHEVRON_LEFT: 'dtp-icon-chevron-left',
   ICON_CHEVRON_RIGHT: 'dtp-icon-chevron-right',
   ICON_ARROW_DROP_UP: 'dtp-icon-arrow-drop-up',
-  ICON_EVENT: 'dtp-icon-event',
-  ICON_SCHEDULE: 'dtp-icon-schedule',
-  ICON_ADJUST: 'dtp-icon-adjust',
-  ICON_CANCEL: 'dtp-icon-cancel',
   ICON_EXPAND_LESS: 'dtp-icon-expand-less',
   ICON_EXPAND_MORE: 'dtp-icon-expand-more',
   MATERIAL_ICONS: 'material-icons',
@@ -400,10 +396,6 @@ var ROOT = _classNames2.default.ROOT,
     FILLER = _classNames2.default.FILLER,
     ICON_CHEVRON_LEFT = _classNames2.default.ICON_CHEVRON_LEFT,
     ICON_CHEVRON_RIGHT = _classNames2.default.ICON_CHEVRON_RIGHT,
-    ICON_EVENT = _classNames2.default.ICON_EVENT,
-    ICON_SCHEDULE = _classNames2.default.ICON_SCHEDULE,
-    ICON_ADJUST = _classNames2.default.ICON_ADJUST,
-    ICON_CANCEL = _classNames2.default.ICON_CANCEL,
     MATERIAL_ICONS = _classNames2.default.MATERIAL_ICONS,
     MATERIAL_ICONS_ROUND = _classNames2.default.MATERIAL_ICONS_ROUND;
 
@@ -739,20 +731,17 @@ var DateTimePicker = function (_React$Component) {
           _react2.default.createElement(
             'span',
             { className: (0, _utils.classes)(HOVER_SPAN, SELECT_TIME) },
-            _react2.default.createElement('i', { className: (0, _utils.classes)(MATERIAL_ICONS, this.props.useRoundMaterialIcons && MATERIAL_ICONS_ROUND, this.state.mode === TIME ? ICON_EVENT : ICON_SCHEDULE)
-            })
+            this.state.mode === TIME ? 'Date' : 'Time'
           ),
           _react2.default.createElement(
             'span',
             { className: (0, _utils.classes)(HOVER_SPAN, SELECT_TODAY) },
-            _react2.default.createElement('i', { className: (0, _utils.classes)(MATERIAL_ICONS, this.props.useRoundMaterialIcons && MATERIAL_ICONS_ROUND, ICON_ADJUST)
-            })
+            'Today'
           ),
           _react2.default.createElement(
             'span',
             { className: (0, _utils.classes)(HOVER_SPAN, CANCEL_CHANGES) },
-            _react2.default.createElement('i', { className: (0, _utils.classes)(MATERIAL_ICONS, this.props.useRoundMaterialIcons && MATERIAL_ICONS_ROUND, ICON_CANCEL)
-            })
+            'Clear'
           )
         )
       );

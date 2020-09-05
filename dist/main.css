@@ -202,22 +202,6 @@
   content: 'arrow_drop_up';
 }
 
-.dtp-icon-event::before {
-  content: 'event';
-}
-
-.dtp-icon-schedule::before {
-  content: 'schedule';
-}
-
-.dtp-icon-adjust::before {
-  content: 'adjust';
-}
-
-.dtp-icon-cancel::before {
-  content: 'cancel';
-}
-
 .dtp-icon-expand-less::before {
   content: 'expand_less';
 }

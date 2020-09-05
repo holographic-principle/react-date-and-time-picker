@@ -38,10 +38,6 @@ const {
   FILLER,
   ICON_CHEVRON_LEFT,
   ICON_CHEVRON_RIGHT,
-  ICON_EVENT,
-  ICON_SCHEDULE,
-  ICON_ADJUST,
-  ICON_CANCEL,
   MATERIAL_ICONS,
   MATERIAL_ICONS_ROUND,
 } = classNames;
@@ -361,28 +357,15 @@ class DateTimePicker extends React.Component {
         </div>
         <div className={FOOTER_ROW}>
           <span className={classes(HOVER_SPAN, SELECT_TIME)}>
-            <i className={classes(MATERIAL_ICONS,
-              this.props.useRoundMaterialIcons && MATERIAL_ICONS_ROUND,
-              this.state.mode === TIME ?
-                ICON_EVENT :
-                ICON_SCHEDULE)}
-            />
+            {this.state.mode === TIME ?
+              'Date' :
+              'Time'}
           </span>
           <span className={classes(HOVER_SPAN, SELECT_TODAY)}>
-            <i className={classes(
-              MATERIAL_ICONS,
-              this.props.useRoundMaterialIcons && MATERIAL_ICONS_ROUND,
-              ICON_ADJUST
-            )}
-            />
+            Today
           </span>
           <span className={classes(HOVER_SPAN, CANCEL_CHANGES)}>
-            <i className={classes(
-              MATERIAL_ICONS,
-              this.props.useRoundMaterialIcons && MATERIAL_ICONS_ROUND,
-              ICON_CANCEL
-            )}
-            />
+            Clear
           </span>
         </div>
       </div>
