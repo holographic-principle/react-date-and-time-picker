@@ -382,26 +382,12 @@ class DateTimePicker extends React.Component {
         onClick={this.onClick}
         onWheel={this.onWheel}
       >
-        <div className={HEADER_ROW}>
-          <span className={classes(HOVER_SPAN, PREVIOUS_MONTH)}>
-            <i className={classes(materialIconsClass, ICON_CHEVRON_LEFT)}/>
-          </span>
-          <span className={FILLER}/>
-          <span className={classes(HOVER_SPAN, HEADER_MONTH,
-            this.state.mode === MONTHS && SELECTED)}
-          >
-            {MONTH_NAMES[month]}
-          </span>
-          <span className={classes(HOVER_SPAN, HEADER_YEAR,
-            this.state.mode === YEARS && SELECTED)}
-          >
-            {year}
-          </span>
-          <span className={FILLER}/>
-          <span className={classes(HOVER_SPAN, NEXT_MONTH)}>
-            <i className={classes(materialIconsClass, ICON_CHEVRON_RIGHT)}/>
-          </span>
-        </div>
+        <Header
+          monthName={MONTH_NAMES[month]}
+          year={year}
+          mode={this.state.mode}
+          materialIconsClass={materialIconsClass}
+        />
         <div ref={div => {this._pickerBody = div;}}
           className={classes(MAIN_SECTION, modeViewsMap.get(this.state.mode))}
         >
@@ -415,6 +401,37 @@ class DateTimePicker extends React.Component {
     );
   }
 }
+
+const Header = ({ monthName, year, mode, materialIconsClass }) => {
+  return (
+    <div className={HEADER_ROW}>
+      <span className={classes(HOVER_SPAN, PREVIOUS_MONTH)}>
+        <i className={classes(materialIconsClass, ICON_CHEVRON_LEFT)}/>
+      </span>
+      <span className={FILLER}/>
+      <span className={classes(
+        HOVER_SPAN,
+        HEADER_MONTH,
+        mode === MONTHS && SELECTED
+      )}
+      >
+        {monthName}
+      </span>
+      <span className={classes(
+        HOVER_SPAN,
+        HEADER_YEAR,
+        mode === YEARS && SELECTED
+      )}
+      >
+        {year}
+      </span>
+      <span className={FILLER}/>
+      <span className={classes(HOVER_SPAN, NEXT_MONTH)}>
+        <i className={classes(materialIconsClass, ICON_CHEVRON_RIGHT)}/>
+      </span>
+    </div>
+  );
+};
 
 DateTimePicker.propTypes = {
   date: PropTypes.instanceOf(Date),

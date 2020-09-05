@@ -753,34 +753,12 @@ var DateTimePicker = function (_React$Component) {
           onClick: this.onClick,
           onWheel: this.onWheel
         },
-        _react2.default.createElement(
-          'div',
-          { className: HEADER_ROW },
-          _react2.default.createElement(
-            'span',
-            { className: (0, _utils.classes)(HOVER_SPAN, PREVIOUS_MONTH) },
-            _react2.default.createElement('i', { className: (0, _utils.classes)(materialIconsClass, ICON_CHEVRON_LEFT) })
-          ),
-          _react2.default.createElement('span', { className: FILLER }),
-          _react2.default.createElement(
-            'span',
-            { className: (0, _utils.classes)(HOVER_SPAN, HEADER_MONTH, this.state.mode === MONTHS && SELECTED)
-            },
-            _ui_strings.MONTH_NAMES[month]
-          ),
-          _react2.default.createElement(
-            'span',
-            { className: (0, _utils.classes)(HOVER_SPAN, HEADER_YEAR, this.state.mode === YEARS && SELECTED)
-            },
-            year
-          ),
-          _react2.default.createElement('span', { className: FILLER }),
-          _react2.default.createElement(
-            'span',
-            { className: (0, _utils.classes)(HOVER_SPAN, NEXT_MONTH) },
-            _react2.default.createElement('i', { className: (0, _utils.classes)(materialIconsClass, ICON_CHEVRON_RIGHT) })
-          )
-        ),
+        _react2.default.createElement(Header, {
+          monthName: _ui_strings.MONTH_NAMES[month],
+          year: year,
+          mode: this.state.mode,
+          materialIconsClass: materialIconsClass
+        }),
         _react2.default.createElement(
           'div',
           { ref: function ref(div) {
@@ -800,6 +778,42 @@ var DateTimePicker = function (_React$Component) {
 
   return DateTimePicker;
 }(_react2.default.Component);
+
+var Header = function Header(_ref2) {
+  var monthName = _ref2.monthName,
+      year = _ref2.year,
+      mode = _ref2.mode,
+      materialIconsClass = _ref2.materialIconsClass;
+
+  return _react2.default.createElement(
+    'div',
+    { className: HEADER_ROW },
+    _react2.default.createElement(
+      'span',
+      { className: (0, _utils.classes)(HOVER_SPAN, PREVIOUS_MONTH) },
+      _react2.default.createElement('i', { className: (0, _utils.classes)(materialIconsClass, ICON_CHEVRON_LEFT) })
+    ),
+    _react2.default.createElement('span', { className: FILLER }),
+    _react2.default.createElement(
+      'span',
+      { className: (0, _utils.classes)(HOVER_SPAN, HEADER_MONTH, mode === MONTHS && SELECTED)
+      },
+      monthName
+    ),
+    _react2.default.createElement(
+      'span',
+      { className: (0, _utils.classes)(HOVER_SPAN, HEADER_YEAR, mode === YEARS && SELECTED)
+      },
+      year
+    ),
+    _react2.default.createElement('span', { className: FILLER }),
+    _react2.default.createElement(
+      'span',
+      { className: (0, _utils.classes)(HOVER_SPAN, NEXT_MONTH) },
+      _react2.default.createElement('i', { className: (0, _utils.classes)(materialIconsClass, ICON_CHEVRON_RIGHT) })
+    )
+  );
+};
 
 DateTimePicker.propTypes = {
   date: _propTypes2.default.instanceOf(Date),
