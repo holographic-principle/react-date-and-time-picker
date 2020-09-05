@@ -377,10 +377,14 @@ class DateTimePicker extends React.Component {
     const materialIconsClass = config && config.materialIconsClass ?
       config.materialIconsClass :
       MATERIAL_ICONS;
+    const containerStyle = config && config.containerStyle ?
+      config.containerStyle :
+      {};
     return (
       <div className={ROOT}
         onClick={this.onClick}
         onWheel={this.onWheel}
+        style={containerStyle}
       >
         <Header
           monthName={MONTH_NAMES[month]}

@@ -747,11 +747,13 @@ var DateTimePicker = function (_React$Component) {
       };
       var config = this.props.config;
       var materialIconsClass = config && config.materialIconsClass ? config.materialIconsClass : MATERIAL_ICONS;
+      var containerStyle = config && config.containerStyle ? config.containerStyle : {};
       return _react2.default.createElement(
         'div',
         { className: ROOT,
           onClick: this.onClick,
-          onWheel: this.onWheel
+          onWheel: this.onWheel,
+          style: containerStyle
         },
         _react2.default.createElement(Header, {
           monthName: _ui_strings.MONTH_NAMES[month],
