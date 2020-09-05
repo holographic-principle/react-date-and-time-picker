@@ -88,6 +88,22 @@ const getLineHeight = (() => {
   };
 })();
 
+const Footer = ({ mode }) => {
+  return (
+    <div className={FOOTER_ROW}>
+      <span className={classes(HOVER_SPAN, SELECT_TIME)}>
+        { mode === TIME ? 'Date' : 'Time' }
+      </span>
+      <span className={classes(HOVER_SPAN, SELECT_TODAY)}>
+        Today
+      </span>
+      <span className={classes(HOVER_SPAN, CANCEL_CHANGES)}>
+        Clear
+      </span>
+    </div>
+  );
+};
+
 class DateTimePicker extends React.Component {
   constructor (props) {
     super(props);
@@ -396,19 +412,7 @@ class DateTimePicker extends React.Component {
         >
           {this.getBody(year, month, selected)}
         </div>
-        <div className={FOOTER_ROW}>
-          <span className={classes(HOVER_SPAN, SELECT_TIME)}>
-            {this.state.mode === TIME ?
-              'Date' :
-              'Time'}
-          </span>
-          <span className={classes(HOVER_SPAN, SELECT_TODAY)}>
-            Today
-          </span>
-          <span className={classes(HOVER_SPAN, CANCEL_CHANGES)}>
-            Clear
-          </span>
-        </div>
+        <Footer mode={this.state.mode} />
       </div>
     );
   }
