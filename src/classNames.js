@@ -27,7 +27,7 @@ export default {
   SELECT_TIME: 'dtp-select-time',
   SELECT_CALENDAR: 'dtp-select-year',
   SELECT_TODAY: 'dtp-select-today',
-  CANCEL_CHANGES: 'dtp-cancel-changes',
+  CLEAR_SELECTION: 'dtp-clear-selection',
   VIEW_DAYS: 'dtp-view-days',
   VIEW_MONTHS: 'dtp-view-months',
   VIEW_YEARS: 'dtp-view-years',

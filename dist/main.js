@@ -130,7 +130,7 @@ exports.default = {
   SELECT_TIME: 'dtp-select-time',
   SELECT_CALENDAR: 'dtp-select-year',
   SELECT_TODAY: 'dtp-select-today',
-  CANCEL_CHANGES: 'dtp-cancel-changes',
+  CLEAR_SELECTION: 'dtp-clear-selection',
   VIEW_DAYS: 'dtp-view-days',
   VIEW_MONTHS: 'dtp-view-months',
   VIEW_YEARS: 'dtp-view-years',
@@ -387,7 +387,7 @@ var ROOT = _classNames2.default.ROOT,
     NEXT_MONTH = _classNames2.default.NEXT_MONTH,
     NEXT_HOUR = _classNames2.default.NEXT_HOUR,
     NEXT_MINUTE = _classNames2.default.NEXT_MINUTE,
-    CANCEL_CHANGES = _classNames2.default.CANCEL_CHANGES,
+    CLEAR_SELECTION = _classNames2.default.CLEAR_SELECTION,
     VIEW_DAYS = _classNames2.default.VIEW_DAYS,
     VIEW_MONTHS = _classNames2.default.VIEW_MONTHS,
     VIEW_YEARS = _classNames2.default.VIEW_YEARS,
@@ -399,7 +399,7 @@ var ROOT = _classNames2.default.ROOT,
 
 
 var targetManager = new _utils.TargetManager({
-  click: [SELECT_DAY, SELECT_MONTH, SELECT_YEAR, SELECT_TIME, HEADER_MONTH, HEADER_YEAR, NEXT_MONTH, NEXT_HOUR, NEXT_MINUTE, PREVIOUS_MONTH, PREVIOUS_HOUR, PREVIOUS_MINUTE, SELECT_CALENDAR, SELECT_TODAY, CANCEL_CHANGES]
+  click: [SELECT_DAY, SELECT_MONTH, SELECT_YEAR, SELECT_TIME, HEADER_MONTH, HEADER_YEAR, NEXT_MONTH, NEXT_HOUR, NEXT_MINUTE, PREVIOUS_MONTH, PREVIOUS_HOUR, PREVIOUS_MINUTE, SELECT_CALENDAR, SELECT_TODAY, CLEAR_SELECTION]
 });
 
 var _Enum = (0, _utils.Enum)(),
@@ -442,7 +442,7 @@ var Footer = function Footer(_ref) {
     ),
     _react2.default.createElement(
       'span',
-      { className: (0, _utils.classes)(HOVER_SPAN, CANCEL_CHANGES) },
+      { className: (0, _utils.classes)(HOVER_SPAN, CLEAR_SELECTION) },
       'Clear'
     )
   );
@@ -456,15 +456,11 @@ var DateTimePicker = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (DateTimePicker.__proto__ || Object.getPrototypeOf(DateTimePicker)).call(this, props));
 
-    var startDate = new Date(_this.props.date);
-    var displayMonth = startDate.getMonth();
-    var displayYear = startDate.getFullYear();
     _this.state = {
       mode: DAYS,
       deltaYear: 0,
-      startDate: startDate,
-      displayMonth: displayMonth,
-      displayYear: displayYear,
+      displayMonth: _this.props.date.getMonth(),
+      displayYear: _this.props.date.getFullYear(),
       selectedDate: _this.props.date.getDate()
     };
     _this.onClick = _this.onClick.bind(_this);
@@ -633,9 +629,16 @@ var DateTimePicker = function (_React$Component) {
           this.props.onChange(new Date());
           break;
 
-        case CANCEL_CHANGES:
-          this.props.onChange(this.state.startDate);
-          break;
+        case CLEAR_SELECTION:
+          {
+            var _date5 = new Date();
+            this.setState({
+              displayMonth: _date5.getMonth(),
+              displayYear: _date5.getFullYear()
+            });
+            this.props.onChange(null);
+            break;
+          }
 
         default:
       }

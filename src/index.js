@@ -30,7 +30,7 @@ const {
   NEXT_MONTH,
   NEXT_HOUR,
   NEXT_MINUTE,
-  CANCEL_CHANGES,
+  CLEAR_SELECTION,
   VIEW_DAYS,
   VIEW_MONTHS,
   VIEW_YEARS,
@@ -57,7 +57,7 @@ const targetManager = new TargetManager({
     PREVIOUS_MINUTE,
     SELECT_CALENDAR,
     SELECT_TODAY,
-    CANCEL_CHANGES,
+    CLEAR_SELECTION,
   ],
 });
 
@@ -98,7 +98,7 @@ const Footer = ({ mode, useTimePicker }) => {
       <span className={classes(HOVER_SPAN, SELECT_TODAY)}>
         Today
       </span>
-      <span className={classes(HOVER_SPAN, CANCEL_CHANGES)}>
+      <span className={classes(HOVER_SPAN, CLEAR_SELECTION)}>
         Clear
       </span>
     </div>
@@ -108,15 +108,11 @@ const Footer = ({ mode, useTimePicker }) => {
 class DateTimePicker extends React.Component {
   constructor (props) {
     super(props);
-    const startDate = new Date(this.props.date);
-    const displayMonth = startDate.getMonth();
-    const displayYear = startDate.getFullYear();
     this.state = {
       mode: DAYS,
       deltaYear: 0,
-      startDate,
-      displayMonth,
-      displayYear,
+      displayMonth: this.props.date.getMonth(),
+      displayYear: this.props.date.getFullYear(),
       selectedDate: this.props.date.getDate(),
     };
     this.onClick = this.onClick.bind(this);
@@ -266,9 +262,15 @@ class DateTimePicker extends React.Component {
       this.props.onChange(new Date());
       break;
 
-    case CANCEL_CHANGES:
-      this.props.onChange(this.state.startDate);
+    case CLEAR_SELECTION: {
+      const date = new Date();
+      this.setState({
+        displayMonth: date.getMonth(),
+        displayYear: date.getFullYear()
+      });
+      this.props.onChange(null);
       break;
+    }
 
     default:
     }
