@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import PropTypes from 'prop-types';
 import classNames from './classNames';
-import {classes} from './utils';
+import {classes, getDefaultLineHeight} from './utils';
 import Digit from './digit';
+import {TRACK_PAD_SCROLL_THRESHOLD} from './consts';
 
 const {
   TIME_CONTAINER,
@@ -17,6 +18,16 @@ const {
   MATERIAL_ICONS,
   DIGITS,
 } = classNames;
+
+const getLineHeight = (() => {
+  let lineHeight = 0;
+  return () => {
+    if (lineHeight === 0) {
+      lineHeight = getDefaultLineHeight() || 18;
+    }
+    return lineHeight;
+  };
+})();
 
 const Controls = ({next, previous, materialIconsClass}) =>
   <div className={TIME_CONTROLS}>
@@ -35,12 +46,40 @@ Controls.propTypes = {
   materialIconsClass: PropTypes.string,
 };
 
-const Time = ({hours, minutes, config}) => {
+const Time = ({hours, minutes, selectedDate, onChange, config}) => {
+  const timeContainerRef = useRef(null);
+  const deltaY = useRef(0);
+
+  const onWheel = (event) => {
+    if (!timeContainerRef.current) {
+      return;
+    }
+    deltaY.current += event.deltaY * (
+      event.deltaMode === WheelEvent.DOM_DELTA_LINE ?
+        getLineHeight() :
+        1
+    );
+    if (Math.abs(deltaY.current) < TRACK_PAD_SCROLL_THRESHOLD) {
+      return;
+    }
+    deltaY.current = 0;
+    const box = timeContainerRef.current.getBoundingClientRect();
+    const delta = event.deltaY > 0 ? 1 : -1;
+    const date = new Date(selectedDate);
+    if (event.clientX < (box.left + box.width / 2)) {
+      date.setHours(date.getHours() + delta);
+    } else {
+      date.setMinutes(date.getMinutes() + delta);
+    }
+    onChange(date);
+  };
+
   const materialIconsClass = config && config.materialIconsClass ?
     config.materialIconsClass :
     MATERIAL_ICONS;
+
   return (
-    <div className={TIME_CONTAINER}>
+    <div ref={timeContainerRef} className={TIME_CONTAINER} onWheel={onWheel}>
       <Controls
         previous={PREVIOUS_HOUR}
         next={NEXT_HOUR}
@@ -81,6 +120,8 @@ const Time = ({hours, minutes, config}) => {
 Time.propTypes = {
   hours: PropTypes.number,
   minutes: PropTypes.number,
+  selectedDate: PropTypes.instanceOf(Date),
+  onChange: PropTypes.func,
   config: PropTypes.object,
 };
 

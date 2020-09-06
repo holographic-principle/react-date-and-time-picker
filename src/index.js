@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {MONTH_NAMES_SHORT} from './ui_strings';
-import {classes, Enum, TargetManager, getDefaultLineHeight} from './utils';
+import {classes, Enum, TargetManager} from './utils';
 import classNames from './classNames';
 import Month from './month';
 import SelectMonth from './selectMonth';
@@ -78,18 +78,6 @@ const modeViewsMap = new Map([
   [TIME, VIEW_TIME],
 ]);
 
-const TRACK_PAD_SCROLL_THRESHOLD = 25;
-
-const getLineHeight = (() => {
-  let lineHeight = 0;
-  return () => {
-    if (lineHeight === 0) {
-      lineHeight = getDefaultLineHeight() || 18;
-    }
-    return lineHeight;
-  };
-})();
-
 const Header = ({ monthName, year, mode, materialIconsClass }) => {
   return (
     <div className={HEADER_ROW}>
@@ -148,14 +136,11 @@ class DateTimePicker extends React.Component {
     super(props);
     this.state = {
       mode: DAYS,
-      deltaYear: 0,
       displayMonth: this.props.date.getMonth(),
       displayYear: this.props.date.getFullYear(),
       selectedDate: this.props.date.getDate(),
     };
     this.onClick = this.onClick.bind(this);
-    this.onWheel = this.onWheel.bind(this);
-    this._pickerBody = null;
     this._deltaY = 0;
   }
 
@@ -167,11 +152,6 @@ class DateTimePicker extends React.Component {
       displayMonth: date.getMonth(),
       displayYear: date.getFullYear()
     });
-  }
-
-  modifyYearByDelta(delta) {
-    this.setState(
-      (prevState) => ({deltaYear: prevState.deltaYear + delta}));
   }
 
   modifyMinutesByDelta(delta) {
@@ -190,15 +170,15 @@ class DateTimePicker extends React.Component {
       this.modifyMonthByDelta(delta);
       return;
     }
-    if (this.state.mode === YEARS) {
-      const delta = -9;
-      this.modifyYearByDelta(delta);
-      return;
-    }
-    if (this.state.mode === TIME) {
-      const delta = -15;
-      this.modifyMinutesByDelta(delta);
-    }
+    // if (this.state.mode === YEARS) {
+    //   const delta = -9;
+    //   this.modifyYearByDelta(delta);
+    //   return;
+    // }
+    // if (this.state.mode === TIME) {
+    //   const delta = -15;
+    //   this.modifyMinutesByDelta(delta);
+    // }
   }
 
   showNextMonth() {
@@ -207,15 +187,15 @@ class DateTimePicker extends React.Component {
       this.modifyMonthByDelta(delta);
       return;
     }
-    if (this.state.mode === YEARS) {
-      const delta = 9;
-      this.modifyYearByDelta(delta);
-      return;
-    }
-    if (this.state.mode === TIME) {
-      const delta = 15;
-      this.modifyMinutesByDelta(delta);
-    }
+    // if (this.state.mode === YEARS) {
+    //   const delta = 9;
+    //   this.modifyYearByDelta(delta);
+    //   return;
+    // }
+    // if (this.state.mode === TIME) {
+    //   const delta = 15;
+    //   this.modifyMinutesByDelta(delta);
+    // }
   }
 
   showPreviousYear() {
@@ -287,7 +267,6 @@ class DateTimePicker extends React.Component {
       this.setYear(date, Number.parseInt(target.textContent, 10));
       this.setState({
         mode: DAYS,
-        deltaYear: 0,
         displayYear: date.getFullYear()
       });
       break;
@@ -339,41 +318,6 @@ class DateTimePicker extends React.Component {
     }
   }
 
-  onWheel (event) {
-    this._deltaY += event.deltaY * (
-      event.deltaMode === WheelEvent.DOM_DELTA_LINE ?
-        getLineHeight() :
-        1
-    );
-    if (Math.abs(this._deltaY) < TRACK_PAD_SCROLL_THRESHOLD) {
-      return;
-    }
-    this._deltaY = 0;
-    switch (this.state.mode) {
-    case YEARS: {
-      const delta = event.deltaY > 0 ? 3 : -3;
-      this.setState(
-        (prevState) => ({deltaYear: prevState.deltaYear + delta}));
-      break;
-    }
-
-    case TIME: {
-      const box = this._pickerBody.getBoundingClientRect();
-      const delta = event.deltaY > 0 ? 1 : -1;
-      const date = new Date(this.props.date);
-      if (event.clientX < (box.left + box.width / 2)) {
-        date.setHours(date.getHours() + delta);
-      } else {
-        date.setMinutes(date.getMinutes() + delta);
-      }
-      this.props.onChange(date);
-      break;
-    }
-
-    default:
-    }
-  }
-
   setYear (date, year) {
     const month = date.getMonth();
     date.setFullYear(year);
@@ -415,13 +359,15 @@ class DateTimePicker extends React.Component {
       return <SelectMonth />;
 
     case YEARS:
-      return <SelectYear year={year + this.state.deltaYear} />;
+      return <SelectYear year={year} />;
 
     case TIME:
       return (
         <Time
           hours={this.props.date.getHours()}
           minutes={this.props.date.getMinutes()}
+          selectedDate={this.props.date}
+          onChange={this.props.onChange}
           config={this.props.config}
         />
       );
@@ -448,7 +394,6 @@ class DateTimePicker extends React.Component {
     return (
       <div className={ROOT}
         onClick={this.onClick}
-        onWheel={this.onWheel}
         style={containerStyle}
       >
         <Header
@@ -457,7 +402,7 @@ class DateTimePicker extends React.Component {
           mode={this.state.mode}
           materialIconsClass={materialIconsClass}
         />
-        <div ref={div => {this._pickerBody = div;}}
+        <div
           className={classes(MAIN_SECTION, modeViewsMap.get(this.state.mode))}
         >
           {this.getBody(year, month, selected)}

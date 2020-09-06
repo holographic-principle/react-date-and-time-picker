@@ -1,5 +1,3 @@
-'use strict';
-
 const autoprefixer = require('autoprefixer');
 const path = require('path');
 const webpack = require('webpack');
@@ -28,6 +26,7 @@ const env = getClientEnvironment(publicUrl);
 module.exports = {
   // You may want 'eval' instead if you prefer to see the compiled output in DevTools.
   // See the discussion in https://github.com/facebookincubator/create-react-app/issues/343.
+  mode: 'development',
   devtool: 'cheap-module-source-map',
   // These are the "entry points" to our application.
   // This means they will be the "root" imports that are included in JS bundle.
@@ -212,7 +211,7 @@ module.exports = {
     // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
     // <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
     // In development, this will be an empty string.
-    new InterpolateHtmlPlugin(env.raw),
+    new InterpolateHtmlPlugin(HtmlWebpackPlugin, env.raw),
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
       inject: true,

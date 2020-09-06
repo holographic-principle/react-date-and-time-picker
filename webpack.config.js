@@ -3,6 +3,7 @@
 // https://github.com/webpack/docs/wiki/configuration
 
 const path = require('path');
+const autoprefixer = require('autoprefixer');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const isProduction = process.env.NODE_ENV === 'production';
 const eslintLoader = {
@@ -16,7 +17,7 @@ const babelLoader = {
   test: /.js$/,
   exclude: /node_modules/,
   options: {
-    presets: ['env', 'react']
+    presets: ['@babel/preset-env', '@babel/preset-react']
   },
 };
 const urlLoader = {
@@ -28,16 +29,25 @@ const urlLoader = {
 };
 const cssExtractor = options => ({
   test: /\.css$/,
-  loader: ExtractTextPlugin.extract({
-    fallback: 'style-loader',
-    use: [
-      {
-        loader: 'css-loader',
-        options,
+  use: [
+    'style-loader',
+    {
+      loader: 'css-loader',
+      options,
+    },
+    {
+      loader: 'postcss-loader',
+      options: {
+        // Necessary for external CSS imports to work
+        // https://github.com/facebookincubator/create-react-app/issues/2677
+        ident: 'postcss',
+        plugins: () => [
+          autoprefixer(),
+        ],
       },
-     ],
-   }),
- });
+    },
+  ],
+});
 
 module.exports = [];
 
@@ -50,8 +60,7 @@ const baseConfig = {
       babelLoader,
       urlLoader,
       cssExtractor({
-        importLoaders: 1,
-        minimize: false,
+        importLoaders: true,
       }),
     ],
   },
@@ -90,8 +99,7 @@ if (isProduction) {
         babelLoader,
         urlLoader,
         cssExtractor({
-          importLoaders: 1,
-          minimize: true,
+          importLoaders: true,
         }),
       ],
     },
