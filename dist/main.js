@@ -626,15 +626,22 @@ var DateTimePicker = function (_React$Component) {
           break;
 
         case SELECT_TODAY:
-          this.props.onChange(new Date());
-          break;
-
-        case CLEAR_SELECTION:
           {
             var _date5 = new Date();
             this.setState({
               displayMonth: _date5.getMonth(),
               displayYear: _date5.getFullYear()
+            });
+            this.props.onChange(_date5);
+            break;
+          }
+
+        case CLEAR_SELECTION:
+          {
+            var _date6 = new Date();
+            this.setState({
+              displayMonth: _date6.getMonth(),
+              displayYear: _date6.getFullYear()
             });
             this.props.onChange(null);
             break;

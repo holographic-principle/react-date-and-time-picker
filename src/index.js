@@ -258,9 +258,15 @@ class DateTimePicker extends React.Component {
       this.setState({mode: DAYS});
       break;
 
-    case SELECT_TODAY:
-      this.props.onChange(new Date());
+    case SELECT_TODAY: {
+      const date = new Date();
+      this.setState({
+        displayMonth: date.getMonth(),
+        displayYear: date.getFullYear()
+      });
+      this.props.onChange(date);
       break;
+    }
 
     case CLEAR_SELECTION: {
       const date = new Date();
