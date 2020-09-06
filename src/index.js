@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {MONTH_NAMES} from './ui_strings';
+import {MONTH_NAMES_SHORT} from './ui_strings';
 import {classes, Enum, TargetManager, getDefaultLineHeight} from './utils';
 import classNames from './classNames';
 import Month from './month';
@@ -395,7 +395,7 @@ class DateTimePicker extends React.Component {
         style={containerStyle}
       >
         <Header
-          monthName={MONTH_NAMES[month]}
+          monthName={MONTH_NAMES_SHORT[month]}
           year={year}
           mode={this.state.mode}
           materialIconsClass={materialIconsClass}

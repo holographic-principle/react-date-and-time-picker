@@ -767,7 +767,7 @@ var DateTimePicker = function (_React$Component) {
           style: containerStyle
         },
         _react2.default.createElement(Header, {
-          monthName: _ui_strings.MONTH_NAMES[month],
+          monthName: _ui_strings.MONTH_NAMES_SHORT[month],
           year: year,
           mode: this.state.mode,
           materialIconsClass: materialIconsClass
