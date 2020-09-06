@@ -7,6 +7,7 @@ import classNames from './classNames';
 
 const {
   TD_DAY,
+  TODAY,
   SELECTED_DAY,
   SELECT_DAY,
   TH_DAY,
@@ -29,10 +30,22 @@ const Week = ({year, month, week, selected}) => {
     const isSelected =
         ['year', 'month', 'day'].every(
           prop => current[prop] === selected[prop]);
+    const dateToday = new Date();
+    const today = {
+      year: dateToday.getFullYear(),
+      month: dateToday.getMonth(),
+      day: dateToday.getDate(),
+    };
+    const isToday = ['year', 'month', 'day'].every(
+      prop => current[prop] === today[prop]);
     return (
       <td key={index}
-        className={classes(TD_DAY, day > 0 && SELECT_DAY,
-          isSelected && SELECTED_DAY)}
+        className={classes(
+          TD_DAY,
+          day > 0 && SELECT_DAY,
+          isSelected && SELECTED_DAY,
+          isToday && TODAY
+        )}
       >
         {day > 0 &&
           <span className={classes(HOVER_SPAN)}>

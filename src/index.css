@@ -142,6 +142,10 @@
               0 0 2px hsla(0, 0%, 0%, .2);
 }
 
+.dtp-today > .dtp-hover-span {
+  box-shadow: 0 0 4px hsla(0, 0%, 0%, .2);
+}
+
 .dtp-selected-day > .dtp-hover-span  {
   background-color: hsl(210, 100%, 50%);
   color: white;

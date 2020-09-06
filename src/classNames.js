@@ -13,6 +13,7 @@ export default {
   DISPLAY_LIGHT: 'dtp-digit-display-light',
   DIGITS: 'dtp-digits',
   HOVER_SPAN: 'dtp-hover-span',
+  TODAY: 'dtp-today',
   SELECTED_DAY: 'dtp-selected-day',
   SELECTED: 'dtp-selected',
   PREVIOUS_MONTH: 'dtp-previous-month',

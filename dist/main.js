@@ -116,6 +116,7 @@ exports.default = {
   DISPLAY_LIGHT: 'dtp-digit-display-light',
   DIGITS: 'dtp-digits',
   HOVER_SPAN: 'dtp-hover-span',
+  TODAY: 'dtp-today',
   SELECTED_DAY: 'dtp-selected-day',
   SELECTED: 'dtp-selected',
   PREVIOUS_MONTH: 'dtp-previous-month',
@@ -884,6 +885,7 @@ var _classNames2 = _interopRequireDefault(_classNames);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var TD_DAY = _classNames2.default.TD_DAY,
+    TODAY = _classNames2.default.TODAY,
     SELECTED_DAY = _classNames2.default.SELECTED_DAY,
     SELECT_DAY = _classNames2.default.SELECT_DAY,
     TH_DAY = _classNames2.default.TH_DAY,
@@ -916,10 +918,19 @@ var Week = function Week(_ref2) {
     var isSelected = ['year', 'month', 'day'].every(function (prop) {
       return current[prop] === selected[prop];
     });
+    var dateToday = new Date();
+    var today = {
+      year: dateToday.getFullYear(),
+      month: dateToday.getMonth(),
+      day: dateToday.getDate()
+    };
+    var isToday = ['year', 'month', 'day'].every(function (prop) {
+      return current[prop] === today[prop];
+    });
     return _react2.default.createElement(
       'td',
       { key: index,
-        className: (0, _utils.classes)(TD_DAY, day > 0 && SELECT_DAY, isSelected && SELECTED_DAY)
+        className: (0, _utils.classes)(TD_DAY, day > 0 && SELECT_DAY, isSelected && SELECTED_DAY, isToday && TODAY)
       },
       day > 0 && _react2.default.createElement(
         'span',
