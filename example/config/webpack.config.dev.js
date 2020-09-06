@@ -155,29 +155,27 @@ module.exports = {
           {
             test: /\.css$/,
             use: [
-              require.resolve('style-loader'),
+              'style-loader',
               {
-                loader: require.resolve('css-loader'),
+                loader: 'css-loader',
                 options: {
-                  importLoaders: 1,
+                  importLoaders: true,
                 },
               },
               {
-                loader: require.resolve('postcss-loader'),
+                loader: 'postcss-loader',
                 options: {
                   // Necessary for external CSS imports to work
                   // https://github.com/facebookincubator/create-react-app/issues/2677
                   ident: 'postcss',
                   plugins: () => [
-                    require('postcss-flexbugs-fixes'),
                     autoprefixer({
-                      browsers: [
+                      overrideBrowserslist: [
                         '>1%',
                         'last 4 versions',
                         'Firefox ESR',
                         'not ie < 9', // React doesn't support IE8 anyway
                       ],
-                      flexbox: 'no-2009',
                     }),
                   ],
                 },
@@ -195,7 +193,7 @@ module.exports = {
             // Also exclude `html` and `json` extensions so they get processed
             // by webpacks internal loaders.
             exclude: [/\.(js|jsx|mjs)$/, /\.html$/, /\.json$/],
-            loader: require.resolve('file-loader'),
+            loader: 'file-loader',
             options: {
               name: 'static/media/[name].[hash:8].[ext]',
             },
@@ -243,6 +241,9 @@ module.exports = {
     // You can remove this if you don't use Moment.js:
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
   ],
+  optimization: {
+    minimize: false
+  },
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
   node: {
