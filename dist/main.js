@@ -1202,6 +1202,46 @@ const Header = ({
   })));
 };
 
+const MainBody = ({
+  year,
+  month,
+  selected,
+  date,
+  mode,
+  onChange,
+  config
+}) => {
+  if (mode === DAYS) {
+    return /*#__PURE__*/external_react_default.a.createElement(src_month, {
+      year,
+      month,
+      selected
+    });
+  }
+
+  if (mode === MONTHS) {
+    return /*#__PURE__*/external_react_default.a.createElement(selectMonth, null);
+  }
+
+  if (mode === YEARS) {
+    return /*#__PURE__*/external_react_default.a.createElement(selectYear, {
+      year: year
+    });
+  }
+
+  if (mode === TIME) {
+    return /*#__PURE__*/external_react_default.a.createElement(time, {
+      hours: date.getHours(),
+      minutes: date.getMinutes(),
+      selectedDate: date,
+      onChange: onChange,
+      config: config
+    });
+  }
+
+  return null;
+};
+
 const Footer = ({
   mode,
   useTimePicker
@@ -1463,36 +1503,6 @@ class src_DateTimePicker extends external_react_default.a.Component {
     }
   }
 
-  getBody(year, month, selected) {
-    switch (this.state.mode) {
-      case DAYS:
-        return /*#__PURE__*/external_react_default.a.createElement(src_month, {
-          year,
-          month,
-          selected
-        });
-
-      case MONTHS:
-        return /*#__PURE__*/external_react_default.a.createElement(selectMonth, null);
-
-      case YEARS:
-        return /*#__PURE__*/external_react_default.a.createElement(selectYear, {
-          year: year
-        });
-
-      case TIME:
-        return /*#__PURE__*/external_react_default.a.createElement(time, {
-          hours: this.props.date.getHours(),
-          minutes: this.props.date.getMinutes(),
-          selectedDate: this.props.date,
-          onChange: this.props.onChange,
-          config: this.props.config
-        });
-
-      default:
-    }
-  }
-
   render() {
     const year = this.state.displayYear;
     const month = this.state.displayMonth;
@@ -1515,7 +1525,15 @@ class src_DateTimePicker extends external_react_default.a.Component {
       materialIconsClass: materialIconsClass
     }), /*#__PURE__*/external_react_default.a.createElement("div", {
       className: classes(MAIN_SECTION, modeViewsMap.get(this.state.mode))
-    }, this.getBody(year, month, selected)), /*#__PURE__*/external_react_default.a.createElement(Footer, {
+    }, /*#__PURE__*/external_react_default.a.createElement(MainBody, {
+      year: year,
+      month: month,
+      selected: selected,
+      date: this.props.date,
+      mode: this.state.mode,
+      onChange: this.props.onChange,
+      config: this.props.config
+    })), /*#__PURE__*/external_react_default.a.createElement(Footer, {
       mode: this.state.mode,
       useTimePicker: Boolean(config && config.useTimePicker)
     }));

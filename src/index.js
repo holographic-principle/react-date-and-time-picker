@@ -113,6 +113,30 @@ const Header = ({ monthName, year, mode, materialIconsClass }) => {
   );
 };
 
+const MainBody = ({year, month, selected, date, mode, onChange, config}) => {
+  if (mode === DAYS) {
+    return <Month {...{year, month, selected}} />;
+  }
+  if (mode === MONTHS) {
+    return <SelectMonth />;
+  }
+  if (mode === YEARS) {
+    return <SelectYear year={year} />;
+  }
+  if (mode === TIME) {
+    return (
+      <Time
+        hours={date.getHours()}
+        minutes={date.getMinutes()}
+        selectedDate={date}
+        onChange={onChange}
+        config={config}
+      />
+    );
+  }
+  return null;
+};
+
 const Footer = ({ mode, useTimePicker }) => {
   return (
     <div className={FOOTER_ROW}>
@@ -350,32 +374,6 @@ class DateTimePicker extends React.Component {
     }
   }
 
-  getBody (year, month, selected) {
-    switch (this.state.mode) {
-    case DAYS:
-      return <Month {...{year, month, selected}} />;
-
-    case MONTHS:
-      return <SelectMonth />;
-
-    case YEARS:
-      return <SelectYear year={year} />;
-
-    case TIME:
-      return (
-        <Time
-          hours={this.props.date.getHours()}
-          minutes={this.props.date.getMinutes()}
-          selectedDate={this.props.date}
-          onChange={this.props.onChange}
-          config={this.props.config}
-        />
-      );
-    default:
-
-    }
-  }
-
   render() {
     const year = this.state.displayYear;
     const month = this.state.displayMonth;
@@ -405,7 +403,15 @@ class DateTimePicker extends React.Component {
         <div
           className={classes(MAIN_SECTION, modeViewsMap.get(this.state.mode))}
         >
-          {this.getBody(year, month, selected)}
+          <MainBody
+            year={year}
+            month={month}
+            selected={selected}
+            date={this.props.date}
+            mode={this.state.mode}
+            onChange={this.props.onChange}
+            config={this.props.config}
+          />
         </div>
         <Footer
           mode={this.state.mode}
