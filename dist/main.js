@@ -119,9 +119,11 @@ exports.default = {
   TODAY: 'dtp-today',
   SELECTED_DAY: 'dtp-selected-day',
   SELECTED: 'dtp-selected',
+  PREVIOUS_YEAR: 'dtp-previous-year',
   PREVIOUS_MONTH: 'dtp-previous-month',
   PREVIOUS_HOUR: 'dtp-hour-previous',
   PREVIOUS_MINUTE: 'dtp-minute-previous',
+  NEXT_YEAR: 'dtp-next-year',
   NEXT_MONTH: 'dtp-next-month',
   NEXT_HOUR: 'dtp-hour-next',
   NEXT_MINUTE: 'dtp-minute-next',
@@ -136,7 +138,6 @@ exports.default = {
   VIEW_MONTHS: 'dtp-view-months',
   VIEW_YEARS: 'dtp-view-years',
   VIEW_TIME: 'dtp-view-time',
-  FILLER: 'dtp-filler',
   ICON_CHEVRON_LEFT: 'dtp-icon-chevron-left',
   ICON_CHEVRON_RIGHT: 'dtp-icon-chevron-right',
   ICON_ARROW_DROP_UP: 'dtp-icon-arrow-drop-up',
@@ -382,9 +383,11 @@ var ROOT = _classNames2.default.ROOT,
     SELECT_TIME = _classNames2.default.SELECT_TIME,
     SELECT_CALENDAR = _classNames2.default.SELECT_CALENDAR,
     SELECT_TODAY = _classNames2.default.SELECT_TODAY,
+    PREVIOUS_YEAR = _classNames2.default.PREVIOUS_YEAR,
     PREVIOUS_MONTH = _classNames2.default.PREVIOUS_MONTH,
     PREVIOUS_HOUR = _classNames2.default.PREVIOUS_HOUR,
     PREVIOUS_MINUTE = _classNames2.default.PREVIOUS_MINUTE,
+    NEXT_YEAR = _classNames2.default.NEXT_YEAR,
     NEXT_MONTH = _classNames2.default.NEXT_MONTH,
     NEXT_HOUR = _classNames2.default.NEXT_HOUR,
     NEXT_MINUTE = _classNames2.default.NEXT_MINUTE,
@@ -393,14 +396,13 @@ var ROOT = _classNames2.default.ROOT,
     VIEW_MONTHS = _classNames2.default.VIEW_MONTHS,
     VIEW_YEARS = _classNames2.default.VIEW_YEARS,
     VIEW_TIME = _classNames2.default.VIEW_TIME,
-    FILLER = _classNames2.default.FILLER,
     ICON_CHEVRON_LEFT = _classNames2.default.ICON_CHEVRON_LEFT,
     ICON_CHEVRON_RIGHT = _classNames2.default.ICON_CHEVRON_RIGHT,
     MATERIAL_ICONS = _classNames2.default.MATERIAL_ICONS;
 
 
 var targetManager = new _utils.TargetManager({
-  click: [SELECT_DAY, SELECT_MONTH, SELECT_YEAR, SELECT_TIME, HEADER_MONTH, HEADER_YEAR, NEXT_MONTH, NEXT_HOUR, NEXT_MINUTE, PREVIOUS_MONTH, PREVIOUS_HOUR, PREVIOUS_MINUTE, SELECT_CALENDAR, SELECT_TODAY, CLEAR_SELECTION]
+  click: [SELECT_DAY, SELECT_MONTH, SELECT_YEAR, SELECT_TIME, HEADER_MONTH, HEADER_YEAR, NEXT_YEAR, NEXT_MONTH, NEXT_HOUR, NEXT_MINUTE, PREVIOUS_YEAR, PREVIOUS_MONTH, PREVIOUS_HOUR, PREVIOUS_MINUTE, SELECT_CALENDAR, SELECT_TODAY, CLEAR_SELECTION]
 });
 
 var _Enum = (0, _utils.Enum)(),
@@ -424,9 +426,53 @@ var getLineHeight = function () {
   };
 }();
 
-var Footer = function Footer(_ref) {
-  var mode = _ref.mode,
-      useTimePicker = _ref.useTimePicker;
+var Header = function Header(_ref) {
+  var monthName = _ref.monthName,
+      year = _ref.year,
+      mode = _ref.mode,
+      materialIconsClass = _ref.materialIconsClass;
+
+  return _react2.default.createElement(
+    'div',
+    { className: HEADER_ROW },
+    _react2.default.createElement(
+      'span',
+      { className: (0, _utils.classes)(HOVER_SPAN, PREVIOUS_MONTH) },
+      _react2.default.createElement('i', { className: (0, _utils.classes)(materialIconsClass, ICON_CHEVRON_LEFT) })
+    ),
+    _react2.default.createElement(
+      'span',
+      { className: (0, _utils.classes)(HOVER_SPAN, HEADER_MONTH, mode === MONTHS && SELECTED)
+      },
+      monthName
+    ),
+    _react2.default.createElement(
+      'span',
+      { className: (0, _utils.classes)(HOVER_SPAN, NEXT_MONTH) },
+      _react2.default.createElement('i', { className: (0, _utils.classes)(materialIconsClass, ICON_CHEVRON_RIGHT) })
+    ),
+    _react2.default.createElement(
+      'span',
+      { className: (0, _utils.classes)(HOVER_SPAN, PREVIOUS_YEAR) },
+      _react2.default.createElement('i', { className: (0, _utils.classes)(materialIconsClass, ICON_CHEVRON_LEFT) })
+    ),
+    _react2.default.createElement(
+      'span',
+      { className: (0, _utils.classes)(HOVER_SPAN, HEADER_YEAR, mode === YEARS && SELECTED)
+      },
+      year
+    ),
+    _react2.default.createElement(
+      'span',
+      { className: (0, _utils.classes)(HOVER_SPAN, NEXT_YEAR) },
+      _react2.default.createElement('i', { className: (0, _utils.classes)(materialIconsClass, ICON_CHEVRON_RIGHT) })
+    )
+  );
+};
+
+var Footer = function Footer(_ref2) {
+  var mode = _ref2.mode,
+      useTimePicker = _ref2.useTimePicker;
 
   return _react2.default.createElement(
     'div',
@@ -537,6 +583,24 @@ var DateTimePicker = function (_React$Component) {
       }
     }
   }, {
+    key: 'showPreviousYear',
+    value: function showPreviousYear() {
+      this.setState(function (prevState) {
+        return {
+          displayYear: Math.max(0, prevState.displayYear - 1)
+        };
+      });
+    }
+  }, {
+    key: 'showNextYear',
+    value: function showNextYear() {
+      this.setState(function (prevState) {
+        return {
+          displayYear: prevState.displayYear + 1
+        };
+      });
+    }
+  }, {
     key: 'onClick',
     value: function onClick(event) {
       var _targetManager$getTar = targetManager.getTarget(event),
@@ -560,6 +624,13 @@ var DateTimePicker = function (_React$Component) {
           break;
         case PREVIOUS_MONTH:
           this.showPreviousMonth();
+          break;
+
+        case NEXT_YEAR:
+          this.showNextYear();
+          break;
+        case PREVIOUS_YEAR:
+          this.showPreviousYear();
           break;
 
         case HEADER_MONTH:
@@ -791,42 +862,6 @@ var DateTimePicker = function (_React$Component) {
 
   return DateTimePicker;
 }(_react2.default.Component);
-
-var Header = function Header(_ref2) {
-  var monthName = _ref2.monthName,
-      year = _ref2.year,
-      mode = _ref2.mode,
-      materialIconsClass = _ref2.materialIconsClass;
-
-  return _react2.default.createElement(
-    'div',
-    { className: HEADER_ROW },
-    _react2.default.createElement(
-      'span',
-      { className: (0, _utils.classes)(HOVER_SPAN, PREVIOUS_MONTH) },
-      _react2.default.createElement('i', { className: (0, _utils.classes)(materialIconsClass, ICON_CHEVRON_LEFT) })
-    ),
-    _react2.default.createElement('span', { className: FILLER }),
-    _react2.default.createElement(
-      'span',
-      { className: (0, _utils.classes)(HOVER_SPAN, HEADER_MONTH, mode === MONTHS && SELECTED)
-      },
-      monthName
-    ),
-    _react2.default.createElement(
-      'span',
-      { className: (0, _utils.classes)(HOVER_SPAN, HEADER_YEAR, mode === YEARS && SELECTED)
-      },
-      year
-    ),
-    _react2.default.createElement('span', { className: FILLER }),
-    _react2.default.createElement(
-      'span',
-      { className: (0, _utils.classes)(HOVER_SPAN, NEXT_MONTH) },
-      _react2.default.createElement('i', { className: (0, _utils.classes)(materialIconsClass, ICON_CHEVRON_RIGHT) })
-    )
-  );
-};
 
 DateTimePicker.propTypes = {
   date: _propTypes2.default.instanceOf(Date),

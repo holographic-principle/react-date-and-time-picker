@@ -69,10 +69,6 @@
   background-size: 100% 2px;
 }
 
-.dtp-filler {
-  flex: 1;
-}
-
 .dtp-main-section {
   align-items: center;
   display: flex;

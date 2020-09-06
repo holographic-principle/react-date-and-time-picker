@@ -24,9 +24,11 @@ const {
   SELECT_TIME,
   SELECT_CALENDAR,
   SELECT_TODAY,
+  PREVIOUS_YEAR,
   PREVIOUS_MONTH,
   PREVIOUS_HOUR,
   PREVIOUS_MINUTE,
+  NEXT_YEAR,
   NEXT_MONTH,
   NEXT_HOUR,
   NEXT_MINUTE,
@@ -35,7 +37,6 @@ const {
   VIEW_MONTHS,
   VIEW_YEARS,
   VIEW_TIME,
-  FILLER,
   ICON_CHEVRON_LEFT,
   ICON_CHEVRON_RIGHT,
   MATERIAL_ICONS,
@@ -49,9 +50,11 @@ const targetManager = new TargetManager({
     SELECT_TIME,
     HEADER_MONTH,
     HEADER_YEAR,
+    NEXT_YEAR,
     NEXT_MONTH,
     NEXT_HOUR,
     NEXT_MINUTE,
+    PREVIOUS_YEAR,
     PREVIOUS_MONTH,
     PREVIOUS_HOUR,
     PREVIOUS_MINUTE,
@@ -86,6 +89,41 @@ const getLineHeight = (() => {
     return lineHeight;
   };
 })();
+
+const Header = ({ monthName, year, mode, materialIconsClass }) => {
+  return (
+    <div className={HEADER_ROW}>
+      <span className={classes(HOVER_SPAN, PREVIOUS_MONTH)}>
+        <i className={classes(materialIconsClass, ICON_CHEVRON_LEFT)}/>
+      </span>
+      <span className={classes(
+        HOVER_SPAN,
+        HEADER_MONTH,
+        mode === MONTHS && SELECTED
+      )}
+      >
+        {monthName}
+      </span>
+      <span className={classes(HOVER_SPAN, NEXT_MONTH)}>
+        <i className={classes(materialIconsClass, ICON_CHEVRON_RIGHT)}/>
+      </span>
+      <span className={classes(HOVER_SPAN, PREVIOUS_YEAR)}>
+        <i className={classes(materialIconsClass, ICON_CHEVRON_LEFT)}/>
+      </span>
+      <span className={classes(
+        HOVER_SPAN,
+        HEADER_YEAR,
+        mode === YEARS && SELECTED
+      )}
+      >
+        {year}
+      </span>
+      <span className={classes(HOVER_SPAN, NEXT_YEAR)}>
+        <i className={classes(materialIconsClass, ICON_CHEVRON_RIGHT)}/>
+      </span>
+    </div>
+  );
+};
 
 const Footer = ({ mode, useTimePicker }) => {
   return (
@@ -180,6 +218,18 @@ class DateTimePicker extends React.Component {
     }
   }
 
+  showPreviousYear() {
+    this.setState(prevState => ({
+      displayYear: Math.max(0, prevState.displayYear - 1)
+    }));
+  }
+
+  showNextYear() {
+    this.setState(prevState => ({
+      displayYear: prevState.displayYear + 1
+    }));
+  }
+
   onClick (event) {
     const {target, className} = targetManager.getTarget(event);
 
@@ -199,6 +249,13 @@ class DateTimePicker extends React.Component {
       break;
     case PREVIOUS_MONTH:
       this.showPreviousMonth();
+      break;
+
+    case NEXT_YEAR:
+      this.showNextYear();
+      break;
+    case PREVIOUS_YEAR:
+      this.showPreviousYear();
       break;
 
     case HEADER_MONTH:
@@ -413,37 +470,6 @@ class DateTimePicker extends React.Component {
     );
   }
 }
-
-const Header = ({ monthName, year, mode, materialIconsClass }) => {
-  return (
-    <div className={HEADER_ROW}>
-      <span className={classes(HOVER_SPAN, PREVIOUS_MONTH)}>
-        <i className={classes(materialIconsClass, ICON_CHEVRON_LEFT)}/>
-      </span>
-      <span className={FILLER}/>
-      <span className={classes(
-        HOVER_SPAN,
-        HEADER_MONTH,
-        mode === MONTHS && SELECTED
-      )}
-      >
-        {monthName}
-      </span>
-      <span className={classes(
-        HOVER_SPAN,
-        HEADER_YEAR,
-        mode === YEARS && SELECTED
-      )}
-      >
-        {year}
-      </span>
-      <span className={FILLER}/>
-      <span className={classes(HOVER_SPAN, NEXT_MONTH)}>
-        <i className={classes(materialIconsClass, ICON_CHEVRON_RIGHT)}/>
-      </span>
-    </div>
-  );
-};
 
 DateTimePicker.propTypes = {
   date: PropTypes.instanceOf(Date),
