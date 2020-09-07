@@ -91,7 +91,7 @@ const Time = ({hours, minutes, selectedDate, onChange, config}) => {
     }
     deltaY.current = 0;
     const box = timeContainerRef.current.getBoundingClientRect();
-    const delta = event.deltaY > 0 ? 1 : -1;
+    const delta = event.deltaY > 0 ? -1 : 1;
     const date = new Date(selectedDate);
     if (event.clientX < (box.left + box.width / 2)) {
       date.setHours(date.getHours() + delta);
