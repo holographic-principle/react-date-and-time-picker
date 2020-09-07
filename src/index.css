@@ -134,6 +134,12 @@
   color: white;
 }
 
+.dtp-view-years {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
 .dtp-table .dtp-td-years,
 .dtp-table .dtp-td-months {
   height: 32px;
@@ -152,12 +158,18 @@
 
 .dtp-time-controls {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
 }
 
 .dtp-time-controls .dtp-hover-span {
-  height: 32px;
-  line-height: 32px;
+  padding: 16px;
+}
+
+.dtp-plus-fifteen-minutes,
+.dtp-minus-fifteen-minutes {
+  cursor: pointer;
+  text-align: center;
+  word-spacing: 6px;
 }
 
 .dtp-digits {

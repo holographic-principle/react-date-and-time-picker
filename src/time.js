@@ -17,6 +17,8 @@ const {
   ICON_EXPAND_MORE,
   MATERIAL_ICONS,
   DIGITS,
+  PLUS_FIFTEEN_MINUTES,
+  MINUS_FIFTEEN_MINUTES,
 } = classNames;
 
 const getLineHeight = (() => {
@@ -29,21 +31,46 @@ const getLineHeight = (() => {
   };
 })();
 
-const Controls = ({next, previous, materialIconsClass}) =>
-  <div className={TIME_CONTROLS}>
-    <span className={classes(HOVER_SPAN, previous)}>
-      <i className={classes(materialIconsClass, ICON_EXPAND_LESS)} />
-    </span>
-    <span className={classes(HOVER_SPAN, next)}>
-      <i className={classes(materialIconsClass, ICON_EXPAND_MORE)} />
-    </span>
-  </div>
-;
+const MinusFifteenMinutes = () => {
+  return (
+    <div className={MINUS_FIFTEEN_MINUTES}>
+      -15 min
+    </div>
+  );
+};
 
-Controls.propTypes = {
-  next: PropTypes.string,
-  previous: PropTypes.string,
-  materialIconsClass: PropTypes.string,
+const PlusFifteenMinutes = () => {
+  return (
+    <div className={PLUS_FIFTEEN_MINUTES}>
+      +15 min
+    </div>
+  );
+};
+
+const TopControls = ({ materialIconsClass }) => {
+  return (
+    <div className={TIME_CONTROLS}>
+      <span className={classes(HOVER_SPAN, NEXT_HOUR)}>
+        <i className={classes(materialIconsClass, ICON_EXPAND_LESS)} />
+      </span>
+      <span className={classes(HOVER_SPAN, NEXT_MINUTE)}>
+        <i className={classes(materialIconsClass, ICON_EXPAND_LESS)} />
+      </span>
+    </div>
+  );
+};
+
+const BottomControls = ({ materialIconsClass }) => {
+  return (
+    <div className={TIME_CONTROLS}>
+      <span className={classes(HOVER_SPAN, PREVIOUS_HOUR)}>
+        <i className={classes(materialIconsClass, ICON_EXPAND_MORE)} />
+      </span>
+      <span className={classes(HOVER_SPAN, PREVIOUS_MINUTE)}>
+        <i className={classes(materialIconsClass, ICON_EXPAND_MORE)} />
+      </span>
+    </div>
+  );
 };
 
 const Time = ({hours, minutes, selectedDate, onChange, config}) => {
@@ -80,39 +107,37 @@ const Time = ({hours, minutes, selectedDate, onChange, config}) => {
 
   return (
     <div ref={timeContainerRef} className={TIME_CONTAINER} onWheel={onWheel}>
-      <Controls
-        previous={PREVIOUS_HOUR}
-        next={NEXT_HOUR}
-        materialIconsClass={materialIconsClass}
-      />
-      <svg viewBox="0 0 140 51"
-        width="140px"
-        height="51px"
-        className={DIGITS}
-      >
-        <defs>
-          <path id="dtp-digit-light"
-            d="M 0 0 L 2.5 2.5 17.5 2.5 20 0 17.5 -2.5 2.5 -2.5 Z"
-          />
-        </defs>
-        <g>
-          <Digit digit={(hours / 10) | 0} pos={1}/>
-          <Digit digit={hours % 10} pos={0}/>
-        </g>
-        <g transform="translate(70, 2)">
-          <circle cx="0" r="2" cy="13" />
-          <circle cx="0" r="2" cy="34" />
-        </g>
-        <g transform="translate(82, 0)">
-          <Digit digit={(minutes / 10) | 0} pos={1}/>
-          <Digit digit={minutes % 10} pos={0}/>
-        </g>
-      </svg>
-      <Controls
-        previous={PREVIOUS_MINUTE}
-        next={NEXT_MINUTE}
-        materialIconsClass={materialIconsClass}
-      />
+      <MinusFifteenMinutes />
+      <div>
+        <TopControls materialIconsClass={materialIconsClass} />
+        <svg
+          viewBox="0 0 140 51"
+          width="140px"
+          height="51px"
+          className={DIGITS}
+        >
+          <defs>
+            <path
+              id="dtp-digit-light"
+              d="M 0 0 L 2.5 2.5 17.5 2.5 20 0 17.5 -2.5 2.5 -2.5 Z"
+            />
+          </defs>
+          <g>
+            <Digit digit={(hours / 10) | 0} pos={1}/>
+            <Digit digit={hours % 10} pos={0}/>
+          </g>
+          <g transform="translate(70, 2)">
+            <circle cx="0" r="2" cy="13" />
+            <circle cx="0" r="2" cy="34" />
+          </g>
+          <g transform="translate(82, 0)">
+            <Digit digit={(minutes / 10) | 0} pos={1}/>
+            <Digit digit={minutes % 10} pos={0}/>
+          </g>
+        </svg>
+        <BottomControls materialIconsClass={materialIconsClass} />
+      </div>
+      <PlusFifteenMinutes />
     </div>
   );
 };

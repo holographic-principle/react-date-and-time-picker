@@ -24,6 +24,8 @@ export default {
   NEXT_MONTH: 'dtp-next-month',
   NEXT_HOUR: 'dtp-hour-next',
   NEXT_MINUTE: 'dtp-minute-next',
+  PLUS_FIFTEEN_MINUTES: 'dtp-plus-fifteen-minutes',
+  MINUS_FIFTEEN_MINUTES: 'dtp-minus-fifteen-minutes',
   SELECT_MONTH: 'dtp-td-months',
   SELECT_YEAR: 'dtp-td-years',
   SELECT_DAY: 'dtp-select-day',

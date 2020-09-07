@@ -32,6 +32,8 @@ const {
   NEXT_MONTH,
   NEXT_HOUR,
   NEXT_MINUTE,
+  PLUS_FIFTEEN_MINUTES,
+  MINUS_FIFTEEN_MINUTES,
   CLEAR_SELECTION,
   VIEW_DAYS,
   VIEW_MONTHS,
@@ -54,6 +56,8 @@ const targetManager = new TargetManager({
     NEXT_MONTH,
     NEXT_HOUR,
     NEXT_MINUTE,
+    PLUS_FIFTEEN_MINUTES,
+    MINUS_FIFTEEN_MINUTES,
     PREVIOUS_YEAR,
     PREVIOUS_MONTH,
     PREVIOUS_HOUR,
@@ -121,7 +125,7 @@ const MainBody = ({year, month, selected, date, mode, onChange, config}) => {
     return <SelectMonth />;
   }
   if (mode === YEARS) {
-    return <SelectYear year={year} />;
+    return <SelectYear year={year} config={config} />;
   }
   if (mode === TIME) {
     return (
@@ -165,10 +169,15 @@ class DateTimePicker extends React.Component {
       selectedDate: this.props.date.getDate(),
     };
     this.onClick = this.onClick.bind(this);
-    this._deltaY = 0;
   }
 
-  modifyMonthByDelta(delta) {
+  modifyDisplayYearByDelta(delta) {
+    this.setState(prevState => ({
+      displayYear: Math.max(0, prevState.displayYear + delta)
+    }));
+  }
+
+  modifyDisplayMonthByDelta(delta) {
     const date = new Date(this.props.date);
     date.setFullYear(this.state.displayYear);
     this.setMonth(date, this.state.displayMonth + delta);
@@ -184,54 +193,10 @@ class DateTimePicker extends React.Component {
     if (minutes % 15 !== 0) {
       minutes = Math.round(minutes / 15) * 15;
     }
+    date.setFullYear(this.state.displayYear);
+    date.setMonth(this.state.displayMonth);
     date.setMinutes(minutes + delta);
     this.props.onChange(date);
-  }
-
-  showPreviousMonth() {
-    if (this.state.mode === DAYS) {
-      const delta = -1;
-      this.modifyMonthByDelta(delta);
-      return;
-    }
-    // if (this.state.mode === YEARS) {
-    //   const delta = -9;
-    //   this.modifyYearByDelta(delta);
-    //   return;
-    // }
-    // if (this.state.mode === TIME) {
-    //   const delta = -15;
-    //   this.modifyMinutesByDelta(delta);
-    // }
-  }
-
-  showNextMonth() {
-    if (this.state.mode === DAYS) {
-      const delta = 1;
-      this.modifyMonthByDelta(delta);
-      return;
-    }
-    // if (this.state.mode === YEARS) {
-    //   const delta = 9;
-    //   this.modifyYearByDelta(delta);
-    //   return;
-    // }
-    // if (this.state.mode === TIME) {
-    //   const delta = 15;
-    //   this.modifyMinutesByDelta(delta);
-    // }
-  }
-
-  showPreviousYear() {
-    this.setState(prevState => ({
-      displayYear: Math.max(0, prevState.displayYear - 1)
-    }));
-  }
-
-  showNextYear() {
-    this.setState(prevState => ({
-      displayYear: prevState.displayYear + 1
-    }));
   }
 
   onClick (event) {
@@ -249,17 +214,17 @@ class DateTimePicker extends React.Component {
     }
 
     case NEXT_MONTH:
-      this.showNextMonth();
+      this.modifyDisplayMonthByDelta(1);
       break;
     case PREVIOUS_MONTH:
-      this.showPreviousMonth();
+      this.modifyDisplayMonthByDelta(-1);
       break;
 
     case NEXT_YEAR:
-      this.showNextYear();
+      this.modifyDisplayYearByDelta(1);
       break;
     case PREVIOUS_YEAR:
-      this.showPreviousYear();
+      this.modifyDisplayYearByDelta(-1);
       break;
 
     case HEADER_MONTH:
@@ -300,6 +265,8 @@ class DateTimePicker extends React.Component {
     case PREVIOUS_HOUR: {
       const delta = className === PREVIOUS_HOUR ? -1 : 1;
       const date = new Date(this.props.date);
+      date.setFullYear(this.state.displayYear);
+      date.setMonth(this.state.displayMonth);
       date.setHours(date.getHours() + delta);
       this.props.onChange(date);
       break;
@@ -309,8 +276,17 @@ class DateTimePicker extends React.Component {
     case PREVIOUS_MINUTE: {
       const delta = className === PREVIOUS_MINUTE ? -1 : 1;
       const date = new Date(this.props.date);
+      date.setFullYear(this.state.displayYear);
+      date.setMonth(this.state.displayMonth);
       date.setMinutes(date.getMinutes() + delta);
       this.props.onChange(date);
+      break;
+    }
+
+    case PLUS_FIFTEEN_MINUTES:
+    case MINUS_FIFTEEN_MINUTES: {
+      const delta = className === PLUS_FIFTEEN_MINUTES ? 15 : -15;
+      this.modifyMinutesByDelta(delta);
       break;
     }
 

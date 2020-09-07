@@ -1,10 +1,17 @@
 import React, {useRef, useState} from 'react';
 import PropTypes from 'prop-types';
-import {getDefaultLineHeight, range} from './utils';
+import {classes, getDefaultLineHeight, range} from './utils';
 import classNames from './classNames';
 import {TRACK_PAD_SCROLL_THRESHOLD} from './consts';
 
-const {TABLE, HOVER_SPAN, SELECT_YEAR} = classNames;
+const {
+  TABLE,
+  HOVER_SPAN,
+  SELECT_YEAR,
+  MATERIAL_ICONS,
+  ICON_EXPAND_LESS,
+  ICON_EXPAND_MORE
+} = classNames;
 
 const getLineHeight = (() => {
   let lineHeight = 0;
@@ -16,7 +23,27 @@ const getLineHeight = (() => {
   };
 })();
 
-const SelectYear = ({year: startYear}) => {
+const PreviousYearPageControls = ({ onClick, materialIconsClass }) => {
+  return (
+    <div>
+      <span className={HOVER_SPAN} onClick={onClick}>
+        <i className={classes(materialIconsClass, ICON_EXPAND_LESS)} />
+      </span>
+    </div>
+  );
+};
+
+const NextYearPageControls = ({ onClick, materialIconsClass }) => {
+  return (
+    <div>
+      <span className={HOVER_SPAN} onClick={onClick}>
+        <i className={classes(materialIconsClass, ICON_EXPAND_MORE)} />
+      </span>
+    </div>
+  );
+};
+
+const SelectYear = ({ year: startYear, config }) => {
   const deltaY = useRef(0);
   const [deltaYear, setDeltaYear] = useState(0);
 
@@ -49,17 +76,32 @@ const SelectYear = ({year: startYear}) => {
     );
   });
 
+  const materialIconsClass = config && config.materialIconsClass ?
+    config.materialIconsClass :
+    MATERIAL_ICONS;
+
   return (
-    <table className={TABLE} onWheel={onWheel}>
-      <tbody>{rows.map((tableRow, index) =>
-        <tr key={index}>{tableRow}</tr>)}
-      </tbody>
-    </table>
+    <>
+      <PreviousYearPageControls
+        materialIconsClass={materialIconsClass}
+        onClick={() => setDeltaYear(deltaYear - 9)}
+      />
+      <table className={TABLE} onWheel={onWheel}>
+        <tbody>{rows.map((tableRow, index) =>
+          <tr key={index}>{tableRow}</tr>)}
+        </tbody>
+      </table>
+      <NextYearPageControls
+        materialIconsClass={materialIconsClass}
+        onClick={() => setDeltaYear(deltaYear + 9)}
+      />
+    </>
   );
 };
 
 SelectYear.propTypes = {
   year: PropTypes.number,
+  config: PropTypes.object
 };
 
 export default SelectYear;
