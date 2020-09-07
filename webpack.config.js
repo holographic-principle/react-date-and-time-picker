@@ -86,6 +86,7 @@ if (isProduction) {
 } else {
   module.exports = {
     mode: 'development',
+    devtool: false,
     output: {
       libraryTarget: 'commonjs2',
       path: path.resolve(__dirname, 'build'),
