@@ -2,6 +2,7 @@
 // https://www.valentinog.com/blog/webpack-4-tutorial/
 // https://github.com/webpack/docs/wiki/configuration
 
+const path = require('path');
 const autoprefixer = require('autoprefixer');
 const TerserPlugin = require('terser-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -87,6 +88,7 @@ if (isProduction) {
     mode: 'development',
     output: {
       libraryTarget: 'commonjs2',
+      path: path.resolve(__dirname, 'build'),
     },
     module: {
       rules: [
@@ -98,7 +100,15 @@ if (isProduction) {
       minimize: false,
     },
     plugins: [
-      new MiniCssExtractPlugin()
-    ]
+      new MiniCssExtractPlugin({
+        path: path.resolve(__dirname, 'build')
+      })
+    ],
+    externals: {
+      'react': 'react',
+      'react-dom': 'react-dom',
+      'regenerator-runtime': 'regenerator-runtime',
+      'prop-types': 'prop-types',
+    },
   };
 }
