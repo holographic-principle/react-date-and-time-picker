@@ -3,9 +3,13 @@ node_modules
 webpack.config.js
 .babelrc
 .gitignore
+.eslintrc
+conf.json
 yarn.lock
 yarn-error.log
 .git
+.idea
+src
 example/node_modules
 example/build
 out
