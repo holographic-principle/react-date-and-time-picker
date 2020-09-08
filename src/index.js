@@ -32,8 +32,6 @@ const {
   NEXT_MONTH,
   NEXT_HOUR,
   NEXT_MINUTE,
-  PLUS_FIFTEEN_MINUTES,
-  MINUS_FIFTEEN_MINUTES,
   CLEAR_SELECTION,
   VIEW_DAYS,
   VIEW_MONTHS,
@@ -56,8 +54,6 @@ const targetManager = new TargetManager({
     NEXT_MONTH,
     NEXT_HOUR,
     NEXT_MINUTE,
-    PLUS_FIFTEEN_MINUTES,
-    MINUS_FIFTEEN_MINUTES,
     PREVIOUS_YEAR,
     PREVIOUS_MONTH,
     PREVIOUS_HOUR,
@@ -279,18 +275,7 @@ class DateTimePicker extends React.Component {
 
     case NEXT_MINUTE:
     case PREVIOUS_MINUTE: {
-      const delta = className === PREVIOUS_MINUTE ? -1 : 1;
-      const date = new Date(this.props.date);
-      date.setFullYear(this.state.displayYear);
-      date.setMonth(this.state.displayMonth);
-      date.setMinutes(date.getMinutes() + delta);
-      this.props.onChange(date);
-      break;
-    }
-
-    case PLUS_FIFTEEN_MINUTES:
-    case MINUS_FIFTEEN_MINUTES: {
-      const delta = className === PLUS_FIFTEEN_MINUTES ? 15 : -15;
+      const delta = className === PREVIOUS_MINUTE ? -15 : 15;
       this.modifyMinutesByDelta(delta);
       break;
     }

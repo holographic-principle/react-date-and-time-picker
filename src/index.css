@@ -146,9 +146,8 @@
 }
 
 .dtp-time-container {
-  align-items: center;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
 }
 
@@ -159,13 +158,6 @@
 
 .dtp-time-controls .dtp-hover-span {
   padding: 16px;
-}
-
-.dtp-plus-fifteen-minutes,
-.dtp-minus-fifteen-minutes {
-  cursor: pointer;
-  text-align: center;
-  word-spacing: 6px;
 }
 
 .dtp-digits {

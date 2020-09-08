@@ -17,8 +17,6 @@ const {
   ICON_EXPAND_MORE,
   MATERIAL_ICONS,
   DIGITS,
-  PLUS_FIFTEEN_MINUTES,
-  MINUS_FIFTEEN_MINUTES,
 } = classNames;
 
 const getLineHeight = (() => {
@@ -30,22 +28,6 @@ const getLineHeight = (() => {
     return lineHeight;
   };
 })();
-
-const MinusFifteenMinutes = () => {
-  return (
-    <div className={MINUS_FIFTEEN_MINUTES}>
-      -15 min
-    </div>
-  );
-};
-
-const PlusFifteenMinutes = () => {
-  return (
-    <div className={PLUS_FIFTEEN_MINUTES}>
-      +15 min
-    </div>
-  );
-};
 
 const TopControls = ({ materialIconsClass }) => {
   return (
@@ -107,7 +89,6 @@ const Time = ({hours, minutes, selectedDate, onChange, config}) => {
 
   return (
     <div ref={timeContainerRef} className={TIME_CONTAINER} onWheel={onWheel}>
-      <MinusFifteenMinutes />
       <div>
         <TopControls materialIconsClass={materialIconsClass} />
         <svg
@@ -137,7 +118,6 @@ const Time = ({hours, minutes, selectedDate, onChange, config}) => {
         </svg>
         <BottomControls materialIconsClass={materialIconsClass} />
       </div>
-      <PlusFifteenMinutes />
     </div>
   );
 };
