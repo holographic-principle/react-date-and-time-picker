@@ -167,21 +167,22 @@
   padding: 16px;
 }
 
-.dtp-digits {
-  display: block;
-  margin: auto;
+.dtp-clock {
+  display: flex;
+  justify-content: space-between;
+  width: 140px;
+  font-size: 32px;
+  align-items: center;
 }
 
-.dtp-digits circle {
-   fill: black;
-}
-
-.dtp-digit-display-light {
-  fill: white;
-}
-
-.dtp-digit-display-light.on {
-  fill: black;
+.dtp-clock .dtp-clock-hours,
+.dtp-clock .dtp-clock-minutes {
+  background-color: hsl(210, 100%, 50%);
+  color: white;
+  border-radius: 4px;
+  text-align: center;
+  width: 56px;
+  padding: 6px 0;
 }
 
 .dtp-icon-chevron-left::before {
