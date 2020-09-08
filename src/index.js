@@ -145,22 +145,23 @@ const MainBody = ({year, month, selected, date, mode, onChange, config}) => {
     return <Month {...{year, month, selected}} />;
   }
   if (mode === MONTHS) {
-    return <SelectMonth selectedMonth={date.getMonth()} />;
+    return <SelectMonth selectedMonth={date ? date.getMonth() : null} />;
   }
   if (mode === YEARS) {
     return (
       <SelectYear
         year={year}
-        selectedYear={date.getFullYear()}
+        selectedYear={date ? date.getFullYear() : null}
       />
     );
   }
   if (mode === TIME) {
+    const dateForTime = date ? date : new Date();
     return (
       <Time
-        hours={date.getHours()}
-        minutes={date.getMinutes()}
-        selectedDate={date}
+        hours={dateForTime.getHours()}
+        minutes={dateForTime.getMinutes()}
+        selectedDate={dateForTime}
         onChange={onChange}
         config={config}
       />
@@ -190,11 +191,12 @@ const Footer = ({ mode, useTimePicker }) => {
 class DateTimePicker extends React.Component {
   constructor (props) {
     super(props);
+    const referenceDate = this.props.date ? this.props.date : new Date();
     this.state = {
       mode: DAYS,
-      displayMonth: this.props.date.getMonth(),
-      displayYear: this.props.date.getFullYear(),
-      selectedDate: this.props.date.getDate(),
+      displayMonth: referenceDate.getMonth(),
+      displayYear: referenceDate.getFullYear(),
+      selectedDate: referenceDate.getDate(),
     };
     this.onClick = this.onClick.bind(this);
   }
@@ -206,7 +208,7 @@ class DateTimePicker extends React.Component {
   }
 
   modifyDisplayMonthByDelta(delta) {
-    const date = new Date(this.props.date);
+    const date = this.props.date ? new Date(this.props.date) : new Date();
     date.setFullYear(this.state.displayYear);
     this.setMonth(date, this.state.displayMonth + delta);
     this.setState({
@@ -216,7 +218,7 @@ class DateTimePicker extends React.Component {
   }
 
   modifyMinutesByDelta(delta) {
-    const date = new Date(this.props.date);
+    const date = this.props.date ? new Date(this.props.date) : new Date();
     let minutes = date.getMinutes();
     if (minutes % 15 !== 0) {
       minutes = Math.round(minutes / 15) * 15;
@@ -236,7 +238,7 @@ class DateTimePicker extends React.Component {
 
     switch (className) {
     case SELECT_DAY: {
-      const date = new Date(this.props.date);
+      const date = this.props.date ? new Date(this.props.date) : new Date();
       date.setFullYear(this.state.displayYear);
       date.setMonth(this.state.displayMonth);
       date.setDate(Number.parseInt(target.textContent, 10));
@@ -270,7 +272,7 @@ class DateTimePicker extends React.Component {
       break;
 
     case SELECT_MONTH: {
-      const date = new Date(this.props.date);
+      const date = this.props.date ? new Date(this.props.date) : new Date();
       date.setFullYear(this.state.displayYear);
       this.setMonth(date, Number.parseInt(target.dataset.month, 10));
       this.setState({mode: DAYS, displayMonth: date.getMonth()});
@@ -284,7 +286,7 @@ class DateTimePicker extends React.Component {
       break;
 
     case SELECT_YEAR: {
-      const date = new Date(this.props.date);
+      const date = this.props.date ? new Date(this.props.date) : new Date();
       date.setMonth(this.state.displayMonth);
       this.setYear(date, Number.parseInt(target.textContent, 10));
       this.setState({
@@ -298,7 +300,7 @@ class DateTimePicker extends React.Component {
     case NEXT_HOUR:
     case PREVIOUS_HOUR: {
       const delta = className === PREVIOUS_HOUR ? -1 : 1;
-      const date = new Date(this.props.date);
+      const date = this.props.date ? new Date(this.props.date) : new Date();
       date.setFullYear(this.state.displayYear);
       date.setMonth(this.state.displayMonth);
       date.setHours(date.getHours() + delta);
@@ -376,11 +378,13 @@ class DateTimePicker extends React.Component {
   render() {
     const year = this.state.displayYear;
     const month = this.state.displayMonth;
-    const selected = {
-      year: this.props.date.getFullYear(),
-      month: this.props.date.getMonth(),
-      day: this.props.date.getDate(),
-    };
+    const selected = this.props.date ?
+      {
+        year: this.props.date.getFullYear(),
+        month: this.props.date.getMonth(),
+        day: this.props.date.getDate(),
+      } :
+      null;
     const config = this.props.config;
     const materialIconsClass = config && config.materialIconsClass ?
       config.materialIconsClass :

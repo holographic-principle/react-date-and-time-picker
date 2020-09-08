@@ -27,7 +27,7 @@ Day.propTypes = {
 const Week = ({year, month, week, selected}) => {
   const weekRow = week.map((day, index) => {
     const current = {year, month, day};
-    const isSelected =
+    const isSelected = selected &&
         ['year', 'month', 'day'].every(
           prop => current[prop] === selected[prop]);
     const dateToday = new Date();

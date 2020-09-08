@@ -8,7 +8,7 @@
  * @param {Date} date - A Date instance.
  * @return {number} The week number of the year.
  */
-export function getWeekNumber(date) {
+function getWeekNumber(date) {
   const d = new Date(date.getFullYear(), date.getMonth(), date.getDate());
   // Thursday in current week decides the year.
   // Week starts with Monday, getDay must be rotated accordingly.
