@@ -4,7 +4,7 @@
   "description": "React component to pick date and time (with material design icons).",
   "repository": "https://github.com/holographic-principle/react-datetime-picker",
   "homepage": "https://github.com/holographic-principle/react-datetime-picker",
-  "main": "index.js",
+  "main": "dist/main.min.js",
   "author": "holographic-principle",
   "license": "Apache-2.0",
   "keywords": [
