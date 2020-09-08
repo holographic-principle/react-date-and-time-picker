@@ -129,6 +129,8 @@
   box-shadow: 0 0 4px hsla(0, 0%, 0%, .2);
 }
 
+.dtp-selected-year > .dtp-hover-span,
+.dtp-selected-month > .dtp-hover-span,
 .dtp-selected-day > .dtp-hover-span  {
   background-color: hsl(210, 100%, 50%);
   color: white;

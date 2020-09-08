@@ -10,7 +10,8 @@ const {
   SELECT_YEAR,
   MATERIAL_ICONS,
   ICON_EXPAND_LESS,
-  ICON_EXPAND_MORE
+  ICON_EXPAND_MORE,
+  SELECTED_YEAR
 } = classNames;
 
 const getLineHeight = (() => {
@@ -43,7 +44,7 @@ const NextYearPageControls = ({ onClick, materialIconsClass }) => {
   );
 };
 
-const SelectYear = ({ year: startYear, config }) => {
+const SelectYear = ({ year: startYear, selectedYear, config }) => {
   const deltaY = useRef(0);
   const [deltaYear, setDeltaYear] = useState(0);
 
@@ -70,7 +71,10 @@ const SelectYear = ({ year: startYear, config }) => {
       rows.push(row = []);
     }
     row.push(
-      <td key={index} className={SELECT_YEAR}>
+      <td key={index}
+        className={classes(
+          SELECT_YEAR, selectedYear === year && SELECTED_YEAR )}
+      >
         <span className={HOVER_SPAN}>{year}</span>
       </td>
     );
@@ -101,6 +105,7 @@ const SelectYear = ({ year: startYear, config }) => {
 
 SelectYear.propTypes = {
   year: PropTypes.number,
+  selectedYear: PropTypes.number,
   config: PropTypes.object
 };
 

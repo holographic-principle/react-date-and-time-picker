@@ -14,6 +14,8 @@ export default {
   DIGITS: 'dtp-digits',
   HOVER_SPAN: 'dtp-hover-span',
   TODAY: 'dtp-today',
+  SELECTED_YEAR: 'dtp-selected-year',
+  SELECTED_MONTH: 'dtp-selected-month',
   SELECTED_DAY: 'dtp-selected-day',
   SELECTED: 'dtp-selected',
   PREVIOUS_YEAR: 'dtp-previous-year',

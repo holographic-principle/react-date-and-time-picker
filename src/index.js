@@ -122,10 +122,16 @@ const MainBody = ({year, month, selected, date, mode, onChange, config}) => {
     return <Month {...{year, month, selected}} />;
   }
   if (mode === MONTHS) {
-    return <SelectMonth />;
+    return <SelectMonth selectedMonth={date.getMonth()} />;
   }
   if (mode === YEARS) {
-    return <SelectYear year={year} config={config} />;
+    return (
+      <SelectYear
+        year={year}
+        selectedYear={date.getFullYear()}
+        config={config}
+      />
+    );
   }
   if (mode === TIME) {
     return (
