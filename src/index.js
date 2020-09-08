@@ -243,6 +243,7 @@ class DateTimePicker extends React.Component {
       date.setFullYear(this.state.displayYear);
       this.setMonth(date, Number.parseInt(target.dataset.month, 10));
       this.setState({mode: DAYS, displayMonth: date.getMonth()});
+      this.props.onChange(date);
       break;
     }
 
@@ -259,6 +260,7 @@ class DateTimePicker extends React.Component {
         mode: DAYS,
         displayYear: date.getFullYear()
       });
+      this.props.onChange(date);
       break;
     }
 
