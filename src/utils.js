@@ -1,3 +1,7 @@
+import globalClassNames from './classNames';
+
+const { DISABLED } = globalClassNames;
+
 export function* range(end, start = 0, iter = 1) {
   for (let i = start; i < end; i += iter) {
     yield i;
@@ -45,7 +49,8 @@ export class TargetManager {
       const className = this._targetClassNames
         .get(eventType)
         .find(targetClassName => target.classList.contains(targetClassName));
-      return {target, className};
+      const isDisabled = target.classList.contains(DISABLED);
+      return {target, className, isDisabled};
     }
     return {};
   }

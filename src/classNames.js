@@ -44,4 +44,5 @@ export default {
   ICON_EXPAND_MORE: 'dtp-icon-expand-more',
   MATERIAL_ICONS: 'material-icons',
   TRANSPARENT: 'dtp-transparent',
+  DISABLED: 'dtp-disabled',
 };

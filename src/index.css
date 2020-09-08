@@ -44,6 +44,8 @@
   justify-content: space-around;
 }
 
+.dtp-previous-year,
+.dtp-next-year,
 .dtp-previous-month,
 .dtp-next-month {
   box-sizing: border-box;
@@ -199,4 +201,8 @@
 
 .dtp-transparent {
   color: transparent;
+}
+
+.dtp-disabled {
+  opacity: 0.5;
 }

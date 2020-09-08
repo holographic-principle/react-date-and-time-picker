@@ -37,6 +37,7 @@ const {
   VIEW_MONTHS,
   VIEW_YEARS,
   VIEW_TIME,
+  DISABLED,
   ICON_CHEVRON_LEFT,
   ICON_CHEVRON_RIGHT,
   MATERIAL_ICONS,
@@ -78,10 +79,21 @@ const modeViewsMap = new Map([
   [TIME, VIEW_TIME],
 ]);
 
-const Header = ({ monthName, year, mode, materialIconsClass }) => {
+const Header = ({
+  monthName,
+  year,
+  mode,
+  areArrowControlsDisabled,
+  materialIconsClass
+}) => {
   return (
     <div className={HEADER_ROW}>
-      <span className={classes(HOVER_SPAN, PREVIOUS_MONTH)}>
+      <span className={classes(
+        HOVER_SPAN,
+        PREVIOUS_MONTH,
+        areArrowControlsDisabled && DISABLED
+      )}
+      >
         <i className={classes(materialIconsClass, ICON_CHEVRON_LEFT)}/>
       </span>
       <span className={classes(
@@ -92,10 +104,20 @@ const Header = ({ monthName, year, mode, materialIconsClass }) => {
       >
         {monthName}
       </span>
-      <span className={classes(HOVER_SPAN, NEXT_MONTH)}>
+      <span className={classes(
+        HOVER_SPAN,
+        NEXT_MONTH,
+        areArrowControlsDisabled && DISABLED
+      )}
+      >
         <i className={classes(materialIconsClass, ICON_CHEVRON_RIGHT)}/>
       </span>
-      <span className={classes(HOVER_SPAN, PREVIOUS_YEAR)}>
+      <span className={classes(
+        HOVER_SPAN,
+        PREVIOUS_YEAR,
+        areArrowControlsDisabled && DISABLED
+      )}
+      >
         <i className={classes(materialIconsClass, ICON_CHEVRON_LEFT)}/>
       </span>
       <span className={classes(
@@ -106,7 +128,12 @@ const Header = ({ monthName, year, mode, materialIconsClass }) => {
       >
         {year}
       </span>
-      <span className={classes(HOVER_SPAN, NEXT_YEAR)}>
+      <span className={classes(
+        HOVER_SPAN,
+        NEXT_YEAR,
+        areArrowControlsDisabled && DISABLED
+      )}
+      >
         <i className={classes(materialIconsClass, ICON_CHEVRON_RIGHT)}/>
       </span>
     </div>
@@ -201,7 +228,11 @@ class DateTimePicker extends React.Component {
   }
 
   onClick (event) {
-    const {target, className} = targetManager.getTarget(event);
+    const {target, className, isDisabled} = targetManager.getTarget(event);
+
+    if (isDisabled) {
+      return;
+    }
 
     switch (className) {
     case SELECT_DAY: {
@@ -366,6 +397,7 @@ class DateTimePicker extends React.Component {
           monthName={MONTH_NAMES_SHORT[month]}
           year={year}
           mode={this.state.mode}
+          areArrowControlsDisabled={this.state.mode !== DAYS}
           materialIconsClass={materialIconsClass}
         />
         <div
