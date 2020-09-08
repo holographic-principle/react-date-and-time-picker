@@ -136,12 +136,6 @@
   color: white;
 }
 
-.dtp-view-years {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-}
-
 .dtp-table .dtp-td-years,
 .dtp-table .dtp-td-months {
   height: 32px;

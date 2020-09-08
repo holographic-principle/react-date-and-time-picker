@@ -8,9 +8,6 @@ const {
   TABLE,
   HOVER_SPAN,
   SELECT_YEAR,
-  MATERIAL_ICONS,
-  ICON_EXPAND_LESS,
-  ICON_EXPAND_MORE,
   SELECTED_YEAR
 } = classNames;
 
@@ -24,27 +21,7 @@ const getLineHeight = (() => {
   };
 })();
 
-const PreviousYearPageControls = ({ onClick, materialIconsClass }) => {
-  return (
-    <div>
-      <span className={HOVER_SPAN} onClick={onClick}>
-        <i className={classes(materialIconsClass, ICON_EXPAND_LESS)} />
-      </span>
-    </div>
-  );
-};
-
-const NextYearPageControls = ({ onClick, materialIconsClass }) => {
-  return (
-    <div>
-      <span className={HOVER_SPAN} onClick={onClick}>
-        <i className={classes(materialIconsClass, ICON_EXPAND_MORE)} />
-      </span>
-    </div>
-  );
-};
-
-const SelectYear = ({ year: startYear, selectedYear, config }) => {
+const SelectYear = ({ year: startYear, selectedYear }) => {
   const deltaY = useRef(0);
   const [deltaYear, setDeltaYear] = useState(0);
 
@@ -80,33 +57,18 @@ const SelectYear = ({ year: startYear, selectedYear, config }) => {
     );
   });
 
-  const materialIconsClass = config && config.materialIconsClass ?
-    config.materialIconsClass :
-    MATERIAL_ICONS;
-
   return (
-    <>
-      <PreviousYearPageControls
-        materialIconsClass={materialIconsClass}
-        onClick={() => setDeltaYear(deltaYear - 9)}
-      />
-      <table className={TABLE} onWheel={onWheel}>
-        <tbody>{rows.map((tableRow, index) =>
-          <tr key={index}>{tableRow}</tr>)}
-        </tbody>
-      </table>
-      <NextYearPageControls
-        materialIconsClass={materialIconsClass}
-        onClick={() => setDeltaYear(deltaYear + 9)}
-      />
-    </>
+    <table className={TABLE} onWheel={onWheel}>
+      <tbody>{rows.map((tableRow, index) =>
+        <tr key={index}>{tableRow}</tr>)}
+      </tbody>
+    </table>
   );
 };
 
 SelectYear.propTypes = {
   year: PropTypes.number,
   selectedYear: PropTypes.number,
-  config: PropTypes.object
 };
 
 export default SelectYear;

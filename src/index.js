@@ -129,7 +129,6 @@ const MainBody = ({year, month, selected, date, mode, onChange, config}) => {
       <SelectYear
         year={year}
         selectedYear={date.getFullYear()}
-        config={config}
       />
     );
   }
