@@ -63,6 +63,11 @@
   text-align: center;
 }
 
+.dtp-header-month:hover,
+.dtp-header-year:hover {
+  background-color: #EEEFF3;
+}
+
 .dtp-header-month.dtp-selected,
 .dtp-header-year.dtp-selected {
   background-image: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7));
