@@ -42,7 +42,7 @@ const SelectYear = ({ year: startYear, selectedYear }) => {
   const rows = [];
   let row;
   Array.from(
-    range(startYear + deltaYear + 5, startYear + deltaYear - 4)
+    range(startYear + deltaYear + 8, startYear + deltaYear - 4)
   ).forEach((year, index) => {
     if (index % 3 === 0) {
       rows.push(row = []);
