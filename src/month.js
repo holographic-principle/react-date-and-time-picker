@@ -13,12 +13,9 @@ const {
   TH_DAY,
   TABLE,
   HOVER_SPAN,
-  TRANSPARENT,
 } = classNames;
 
-const Day = ({day}) => day < 10 ?
-  [<span key="1" className={TRANSPARENT}>0</span>, day] :
-  day;
+const Day = ({day}) => day;
 
 Day.propTypes = {
   day: PropTypes.number,

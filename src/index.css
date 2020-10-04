@@ -205,10 +205,6 @@
   content: 'expand_more';
 }
 
-.dtp-transparent {
-  color: transparent;
-}
-
 .dtp-disabled {
   opacity: 0.5;
 }
