@@ -14,6 +14,7 @@ const {
   HOVER_SPAN,
   SELECTED,
   HEADER_ROW,
+  HEADER_GROUP,
   HEADER_MONTH,
   HEADER_YEAR,
   MAIN_SECTION,
@@ -88,54 +89,58 @@ const Header = ({
 }) => {
   return (
     <div className={HEADER_ROW}>
-      <span className={classes(
-        HOVER_SPAN,
-        PREVIOUS_MONTH,
-        areArrowControlsDisabled && DISABLED
-      )}
-      >
-        <i className={classes(materialIconsClass, ICON_CHEVRON_LEFT)}/>
-      </span>
-      <span className={classes(
-        HOVER_SPAN,
-        HEADER_MONTH,
-        mode === MONTHS && SELECTED
-      )}
-      >
-        {monthName}
-      </span>
-      <span className={classes(
-        HOVER_SPAN,
-        NEXT_MONTH,
-        areArrowControlsDisabled && DISABLED
-      )}
-      >
-        <i className={classes(materialIconsClass, ICON_CHEVRON_RIGHT)}/>
-      </span>
-      <span className={classes(
-        HOVER_SPAN,
-        PREVIOUS_YEAR,
-        areArrowControlsDisabled && DISABLED
-      )}
-      >
-        <i className={classes(materialIconsClass, ICON_CHEVRON_LEFT)}/>
-      </span>
-      <span className={classes(
-        HOVER_SPAN,
-        HEADER_YEAR,
-        mode === YEARS && SELECTED
-      )}
-      >
-        {year}
-      </span>
-      <span className={classes(
-        HOVER_SPAN,
-        NEXT_YEAR,
-        areArrowControlsDisabled && DISABLED
-      )}
-      >
-        <i className={classes(materialIconsClass, ICON_CHEVRON_RIGHT)}/>
-      </span>
+      <div className={HEADER_GROUP}>
+        <span className={classes(
+          HOVER_SPAN,
+          PREVIOUS_MONTH,
+          areArrowControlsDisabled && DISABLED
+        )}
+        >
+          <i className={classes(materialIconsClass, ICON_CHEVRON_LEFT)}/>
+        </span>
+        <span className={classes(
+          HOVER_SPAN,
+          HEADER_MONTH,
+          mode === MONTHS && SELECTED
+        )}
+        >
+          {monthName}
+        </span>
+        <span className={classes(
+          HOVER_SPAN,
+          NEXT_MONTH,
+          areArrowControlsDisabled && DISABLED
+        )}
+        >
+          <i className={classes(materialIconsClass, ICON_CHEVRON_RIGHT)}/>
+        </span>
+      </div>
+      <div className={HEADER_GROUP}>
+        <span className={classes(
+          HOVER_SPAN,
+          PREVIOUS_YEAR,
+          areArrowControlsDisabled && DISABLED
+        )}
+        >
+          <i className={classes(materialIconsClass, ICON_CHEVRON_LEFT)}/>
+        </span>
+        <span className={classes(
+          HOVER_SPAN,
+          HEADER_YEAR,
+          mode === YEARS && SELECTED
+        )}
+        >
+          {year}
+        </span>
+        <span className={classes(
+          HOVER_SPAN,
+          NEXT_YEAR,
+          areArrowControlsDisabled && DISABLED
+        )}
+        >
+          <i className={classes(materialIconsClass, ICON_CHEVRON_RIGHT)}/>
+        </span>
+      </div>
     </div>
   );
 };

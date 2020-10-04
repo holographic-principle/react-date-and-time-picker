@@ -3,11 +3,11 @@
   border-radius: 3px;
   border: 1px solid hsl(0, 0%, 95%);
   box-shadow: 0 1px 9px hsla(0, 0%, 0%, .4);
-  color: hsl(0, 0%, 25%);
+  color: #232F3E;
   font-size: 14px;
   left: 0;
   overflow: hidden;
-  padding: 0 12px;
+  padding: 0 24px;
   position: absolute;
   top: 0;
   user-select: none;
@@ -31,13 +31,21 @@
 .dtp-header,
 .dtp-footer {
   align-items: center;
-  background-color: hsl(0, 0%, 98%);
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, .12);
+  background-color: #F6F7FA;
   display: flex;
-  height: 36px;
+  height: 40px;
   justify-content: space-between;
-  line-height: 36px;
-  margin: 0 -12px;
+  margin: 0 -24px;
+}
+
+.dtp-header-group {
+  display: flex;
+  margin: 0 24px;
+}
+
+.dtp-header .dtp-hover-span,
+.dtp-footer .dtp-hover-span {
+  height: auto;
 }
 
 .dtp-footer {
@@ -48,32 +56,24 @@
 .dtp-next-year,
 .dtp-previous-month,
 .dtp-next-month {
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   cursor: pointer;
   padding: 0;
-  text-align: center;
-  width: 40px;
 }
 
 .dtp-header-month,
 .dtp-header-year {
-  border-radius: 0;
-  min-width: 40px;
-  padding: 0 12px;
+  font-weight: 600;
+  padding: 3px 8px;
+  width: 36px;
   text-align: center;
 }
 
 .dtp-header-month:hover,
 .dtp-header-year:hover {
-  background-color: #EEEFF3;
-}
-
-.dtp-header-month.dtp-selected,
-.dtp-header-year.dtp-selected {
-  background-image: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7));
-  background-position: 0 100%;
-  background-repeat: no-repeat;
-  background-size: 100% 2px;
+  background-color: #DDE1EC;
 }
 
 .dtp-main-section {
@@ -125,29 +125,38 @@
   width: 28px;
 }
 
-.dtp-td-day:hover .dtp-hover-span,
 .dtp-td-years .dtp-hover-span:hover,
 .dtp-td-months .dtp-hover-span:hover {
   box-shadow: 1px 1px 4px hsla(0, 0%, 0%, .2),
               0 0 2px hsla(0, 0%, 0%, .2);
 }
 
+.dtp-td-day:hover > .dtp-hover-span {
+  background-color: #DDE1EC;
+}
+
 .dtp-today > .dtp-hover-span {
-  box-shadow: 0 0 4px hsla(0, 0%, 0%, .2);
+  box-shadow: 0 0 3px #8D9AAC, 0 0 3px #8D9AAC;
 }
 
 .dtp-selected-year > .dtp-hover-span,
 .dtp-selected-month > .dtp-hover-span,
 .dtp-selected-day > .dtp-hover-span  {
-  background-color: hsl(210, 100%, 50%);
+  background-color: #2974C4;
   color: white;
+}
+
+.dtp-selected-year:hover > .dtp-hover-span,
+.dtp-selected-month:hover > .dtp-hover-span,
+.dtp-selected-day:hover > .dtp-hover-span  {
+  background-color: #214399;
 }
 
 .dtp-table .dtp-td-years,
 .dtp-table .dtp-td-months {
-  height: 32px;
-  line-height: 32px;
-  padding: 4px 0;
+  height: 28px;
+  line-height: 28px;
+  padding: 6px 10px;
   text-align: center;
   width: 88px;
 }
@@ -177,7 +186,7 @@
 
 .dtp-clock .dtp-clock-hours,
 .dtp-clock .dtp-clock-minutes {
-  background-color: hsl(210, 100%, 50%);
+  background-color: #2974C4;
   color: white;
   border-radius: 4px;
   text-align: center;
@@ -206,5 +215,6 @@
 }
 
 .dtp-disabled {
-  opacity: 0.5;
+  color: #D6D9E2;
+  pointer-events: none;
 }

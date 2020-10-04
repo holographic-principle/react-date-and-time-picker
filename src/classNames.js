@@ -1,6 +1,7 @@
 export default {
   ROOT: 'dtp-root',
   HEADER_ROW: 'dtp-header',
+  HEADER_GROUP: 'dtp-header-group',
   HEADER_MONTH: 'dtp-header-month',
   HEADER_YEAR: 'dtp-header-year',
   MAIN_SECTION: 'dtp-main-section',
