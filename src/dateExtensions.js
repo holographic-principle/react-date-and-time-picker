@@ -66,7 +66,7 @@ export function getWeeksOfMonth(year, month, startWithMonday = true) {
     week.push(0);
   }
 
-  date.setYear(year);
+  date.setFullYear(year);
   date.setMonth(month);
   while (day <= dayCount) {
     date.setDate(day);
