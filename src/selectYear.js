@@ -6,6 +6,7 @@ import {TRACK_PAD_SCROLL_THRESHOLD} from './consts';
 
 const {
   TABLE,
+  DISABLED,
   HOVER_SPAN,
   SELECT_YEAR,
   SELECTED_YEAR
@@ -21,7 +22,7 @@ const getLineHeight = (() => {
   };
 })();
 
-const SelectYear = ({ year: startYear, selectedYear }) => {
+const SelectYear = ({ year: startYear, selectedYear, isYearDisabled }) => {
   const deltaY = useRef(0);
   const [deltaYear, setDeltaYear] = useState(0);
 
@@ -50,7 +51,10 @@ const SelectYear = ({ year: startYear, selectedYear }) => {
     row.push(
       <td key={index}
         className={classes(
-          SELECT_YEAR, selectedYear === year && SELECTED_YEAR )}
+          SELECT_YEAR,
+          selectedYear === year && SELECTED_YEAR,
+          isYearDisabled(year) && DISABLED
+        )}
       >
         <span className={HOVER_SPAN}>{year}</span>
       </td>
@@ -69,6 +73,7 @@ const SelectYear = ({ year: startYear, selectedYear }) => {
 SelectYear.propTypes = {
   year: PropTypes.number,
   selectedYear: PropTypes.number,
+  isYearDisabled: PropTypes.func,
 };
 
 export default SelectYear;

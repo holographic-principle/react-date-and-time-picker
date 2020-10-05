@@ -5,12 +5,13 @@ import {classes} from './utils';
 
 const {
   TABLE,
+  DISABLED,
   HOVER_SPAN,
   SELECT_MONTH,
   SELECTED_MONTH
 } = classNames;
 
-const SelectMonth = ({ selectedMonth }) => {
+const SelectMonth = ({ selectedMonth, isMonthDisabled }) => {
   const rows = [];
   let row;
   MONTH_NAMES_SHORT.forEach((name, index) => {
@@ -21,8 +22,11 @@ const SelectMonth = ({ selectedMonth }) => {
     row.push(
       <td key={index}
         data-month={String(index)}
-        className={
-          classes(SELECT_MONTH, selectedMonth === index && SELECTED_MONTH)}
+        className={classes(
+          SELECT_MONTH,
+          selectedMonth === index && SELECTED_MONTH,
+          isMonthDisabled(index) && DISABLED
+        )}
       >
         <span className={HOVER_SPAN}>{name}</span>
       </td>

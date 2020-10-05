@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {MONTH_NAMES_SHORT} from './ui_strings';
-import {classes, Enum, TargetManager} from './utils';
+import {classes, Enum, isBefore, TargetManager} from './utils';
 import classNames from './classNames';
 import Month from './month';
 import SelectMonth from './selectMonth';
@@ -145,18 +145,37 @@ const Header = ({
   );
 };
 
-const MainBody = ({year, month, selected, date, mode, onChange, config}) => {
+const MainBody = ({
+  year,
+  month,
+  selected,
+  date,
+  mode,
+  onClockScroll,
+  isDayDisabled,
+  isMonthDisabled,
+  isYearDisabled,
+  materialIconsClass,
+  isPreviousHourDisabled,
+  isPreviousMinuteDisabled
+}) => {
   if (mode === DAYS) {
-    return <Month {...{year, month, selected}} />;
+    return <Month {...{year, month, selected, isDayDisabled}} />;
   }
   if (mode === MONTHS) {
-    return <SelectMonth selectedMonth={date ? date.getMonth() : null} />;
+    return (
+      <SelectMonth
+        selectedMonth={date ? date.getMonth() : null}
+        isMonthDisabled={isMonthDisabled}
+      />
+    );
   }
   if (mode === YEARS) {
     return (
       <SelectYear
         year={year}
         selectedYear={date ? date.getFullYear() : null}
+        isYearDisabled={isYearDisabled}
       />
     );
   }
@@ -167,15 +186,17 @@ const MainBody = ({year, month, selected, date, mode, onChange, config}) => {
         hours={dateForTime.getHours()}
         minutes={dateForTime.getMinutes()}
         selectedDate={dateForTime}
-        onChange={onChange}
-        config={config}
+        onClockScroll={onClockScroll}
+        materialIconsClass={materialIconsClass}
+        isPreviousHourDisabled={isPreviousHourDisabled}
+        isPreviousMinuteDisabled={isPreviousMinuteDisabled}
       />
     );
   }
   return null;
 };
 
-const Footer = ({ mode, useTimePicker }) => {
+const Footer = ({ mode, useTimePicker, isTodayDisabled }) => {
   return (
     <div className={FOOTER_ROW}>
       {useTimePicker && (
@@ -183,7 +204,10 @@ const Footer = ({ mode, useTimePicker }) => {
           { mode === TIME ? 'Date' : 'Time' }
         </span>
       )}
-      <span className={classes(HOVER_SPAN, SELECT_TODAY)}>
+      <span className={
+        classes(HOVER_SPAN, SELECT_TODAY, isTodayDisabled && DISABLED)
+      }
+      >
         Today
       </span>
       <span className={classes(HOVER_SPAN, CLEAR_SELECTION)}>
@@ -206,6 +230,53 @@ class DateTimePicker extends React.Component {
     this.onClick = this.onClick.bind(this);
   }
 
+  isDateAllowed(date) {
+    const minDate = this.getMinDate();
+    if (!minDate) {
+      return true;
+    }
+    return !isBefore(date, minDate);
+  }
+
+  getMinDate() {
+    const config = this.props.config;
+    return config && config.minDate ? config.minDate : null;
+  }
+
+  getDateModifiedByMonthSelection(monthIndex) {
+    const date = this.props.date ? new Date(this.props.date) : new Date();
+    date.setFullYear(this.state.displayYear);
+    this.setMonth(date, monthIndex);
+    return date;
+  }
+
+  getDateModifiedByYearSelection(year) {
+    const date = this.props.date ? new Date(this.props.date) : new Date();
+    date.setMonth(this.state.displayMonth);
+    this.setYear(date, year);
+    return date;
+  }
+
+  getDateModifiedByHourDelta(delta) {
+    const date = this.props.date ? new Date(this.props.date) : new Date();
+    date.setFullYear(this.state.displayYear);
+    date.setMonth(this.state.displayMonth);
+    date.setHours(date.getHours() + delta);
+    return date;
+  }
+
+  getDateModifiedByMinuteDelta(delta) {
+    const date = this.props.date ? new Date(this.props.date) : new Date();
+    let minutes = date.getMinutes();
+    if (minutes % 15 !== 0) {
+      minutes = Math.round(minutes / 15) * 15;
+    }
+    date.setFullYear(this.state.displayYear);
+    date.setMonth(this.state.displayMonth);
+    date.setMinutes(minutes + delta);
+    return date;
+  }
+
   modifyDisplayYearByDelta(delta) {
     this.setState(prevState => ({
       displayYear: Math.max(0, prevState.displayYear + delta)
@@ -222,15 +293,13 @@ class DateTimePicker extends React.Component {
     });
   }
 
+  modifyHoursByDelta(delta) {
+    const date = this.getDateModifiedByHourDelta(delta);
+    this.props.onChange(date);
+  }
+
   modifyMinutesByDelta(delta) {
-    const date = this.props.date ? new Date(this.props.date) : new Date();
-    let minutes = date.getMinutes();
-    if (minutes % 15 !== 0) {
-      minutes = Math.round(minutes / 15) * 15;
-    }
-    date.setFullYear(this.state.displayYear);
-    date.setMonth(this.state.displayMonth);
-    date.setMinutes(minutes + delta);
+    const date = this.getDateModifiedByMinuteDelta(delta);
     this.props.onChange(date);
   }
 
@@ -277,9 +346,8 @@ class DateTimePicker extends React.Component {
       break;
 
     case SELECT_MONTH: {
-      const date = this.props.date ? new Date(this.props.date) : new Date();
-      date.setFullYear(this.state.displayYear);
-      this.setMonth(date, Number.parseInt(target.dataset.month, 10));
+      const selectedMonthIndex = Number.parseInt(target.dataset.month, 10);
+      const date = this.getDateModifiedByMonthSelection(selectedMonthIndex);
       this.setState({mode: DAYS, displayMonth: date.getMonth()});
       this.props.onChange(date);
       break;
@@ -291,9 +359,8 @@ class DateTimePicker extends React.Component {
       break;
 
     case SELECT_YEAR: {
-      const date = this.props.date ? new Date(this.props.date) : new Date();
-      date.setMonth(this.state.displayMonth);
-      this.setYear(date, Number.parseInt(target.textContent, 10));
+      const selectedYear = Number.parseInt(target.textContent, 10);
+      const date = this.getDateModifiedByYearSelection(selectedYear);
       this.setState({
         mode: DAYS,
         displayYear: date.getFullYear()
@@ -305,11 +372,7 @@ class DateTimePicker extends React.Component {
     case NEXT_HOUR:
     case PREVIOUS_HOUR: {
       const delta = className === PREVIOUS_HOUR ? -1 : 1;
-      const date = this.props.date ? new Date(this.props.date) : new Date();
-      date.setFullYear(this.state.displayYear);
-      date.setMonth(this.state.displayMonth);
-      date.setHours(date.getHours() + delta);
-      this.props.onChange(date);
+      this.modifyHoursByDelta(delta);
       break;
     }
 
@@ -418,13 +481,34 @@ class DateTimePicker extends React.Component {
             selected={selected}
             date={this.props.date}
             mode={this.state.mode}
-            onChange={this.props.onChange}
-            config={this.props.config}
+            onClockScroll={date => {
+              if (!this.isDateAllowed(date)) {
+                return;
+              }
+              this.props.onChange(date);
+            }}
+            isDayDisabled={date => !this.isDateAllowed(date)}
+            isMonthDisabled={potentialMonthIndex =>
+              !this.isDateAllowed(
+                this.getDateModifiedByMonthSelection(potentialMonthIndex)
+              )}
+            isYearDisabled={potentialYear =>
+              !this.isDateAllowed(
+                this.getDateModifiedByYearSelection(potentialYear)
+              )}
+            materialIconsClass={materialIconsClass}
+            isPreviousHourDisabled={
+              !this.isDateAllowed(this.getDateModifiedByHourDelta(-1))
+            }
+            isPreviousMinuteDisabled={
+              !this.isDateAllowed(this.getDateModifiedByMinuteDelta(-15))
+            }
           />
         </div>
         <Footer
           mode={this.state.mode}
           useTimePicker={Boolean(config && config.useTimePicker)}
+          isTodayDisabled={!this.isDateAllowed(new Date())}
         />
       </div>
     );

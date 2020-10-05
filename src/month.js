@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {getWeeksOfMonth} from './dateExtensions';
 import {WEEK_DAYS_SHORT} from './ui_strings';
-import {rotate, classes} from './utils';
+import {rotate, classes, getDateFromYearMonthAndDay} from './utils';
 import classNames from './classNames';
 
 const {
@@ -10,6 +10,7 @@ const {
   TODAY,
   SELECTED_DAY,
   SELECT_DAY,
+  DISABLED,
   TH_DAY,
   TABLE,
   HOVER_SPAN,
@@ -21,7 +22,7 @@ Day.propTypes = {
   day: PropTypes.number,
 };
 
-const Week = ({year, month, week, selected}) => {
+const Week = ({year, month, week, selected, isDayDisabled}) => {
   const weekRow = week.map((day, index) => {
     const current = {year, month, day};
     const isSelected = selected &&
@@ -41,7 +42,8 @@ const Week = ({year, month, week, selected}) => {
           TD_DAY,
           day > 0 && SELECT_DAY,
           isSelected && SELECTED_DAY,
-          isToday && TODAY
+          isToday && TODAY,
+          isDayDisabled(getDateFromYearMonthAndDay(current)) && DISABLED
         )}
       >
         {day > 0 &&
@@ -60,15 +62,16 @@ Week.propTypes = {
   month: PropTypes.number,
   week: PropTypes.array,
   selected: PropTypes.object,
+  isDayDisabled: PropTypes.func,
 };
 
-const Month = ({ year, month, selected}) => {
+const Month = ({ year, month, selected, isDayDisabled}) => {
   const weeksOfMonth = getWeeksOfMonth(year, month);
   const weekDays = rotate(WEEK_DAYS_SHORT, 1);
   const weekLabels = weekDays.map(wday =>
     <th key={wday} className={TH_DAY}>{wday}</th>);
   const weekRows = weeksOfMonth.map(([, week], index) => (
-    <Week key={index} {...{year, month, week, selected}} />
+    <Week key={index} {...{year, month, week, selected, isDayDisabled}} />
   ));
   return (
     <table className={TABLE}>
@@ -86,6 +89,7 @@ Month.propTypes = {
   year: PropTypes.number,
   month: PropTypes.number,
   selected: PropTypes.object,
+  isDayDisabled: PropTypes.func,
 };
 
 export default Month;

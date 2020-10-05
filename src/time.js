@@ -11,13 +11,13 @@ const {
   CLOCK_HOURS,
   CLOCK_MINUTES,
   HOVER_SPAN,
+  DISABLED,
   NEXT_HOUR,
   PREVIOUS_HOUR,
   NEXT_MINUTE,
   PREVIOUS_MINUTE,
   ICON_EXPAND_LESS,
   ICON_EXPAND_MORE,
-  MATERIAL_ICONS,
 } = classNames;
 
 const getLineHeight = (() => {
@@ -43,13 +43,27 @@ const TopControls = ({ materialIconsClass }) => {
   );
 };
 
-const BottomControls = ({ materialIconsClass }) => {
+const BottomControls = ({
+  materialIconsClass,
+  isPreviousHourDisabled,
+  isPreviousMinuteDisabled
+}) => {
   return (
     <div className={TIME_CONTROLS}>
-      <span className={classes(HOVER_SPAN, PREVIOUS_HOUR)}>
+      <span className={classes(
+        HOVER_SPAN,
+        PREVIOUS_HOUR,
+        isPreviousHourDisabled && DISABLED
+      )}
+      >
         <i className={classes(materialIconsClass, ICON_EXPAND_MORE)} />
       </span>
-      <span className={classes(HOVER_SPAN, PREVIOUS_MINUTE)}>
+      <span className={classes(
+        HOVER_SPAN,
+        PREVIOUS_MINUTE,
+        isPreviousMinuteDisabled && DISABLED
+      )}
+      >
         <i className={classes(materialIconsClass, ICON_EXPAND_MORE)} />
       </span>
     </div>
@@ -70,7 +84,15 @@ const Clock = ({ hours, minutes }) => {
   );
 };
 
-const Time = ({hours, minutes, selectedDate, onChange, config}) => {
+const Time = ({
+  hours,
+  minutes,
+  selectedDate,
+  onClockScroll,
+  materialIconsClass,
+  isPreviousHourDisabled,
+  isPreviousMinuteDisabled
+}) => {
   const timeContainerRef = useRef(null);
   const deltaY = useRef(0);
 
@@ -95,19 +117,19 @@ const Time = ({hours, minutes, selectedDate, onChange, config}) => {
     } else {
       date.setMinutes(date.getMinutes() + delta);
     }
-    onChange(date);
+    onClockScroll(date);
   };
-
-  const materialIconsClass = config && config.materialIconsClass ?
-    config.materialIconsClass :
-    MATERIAL_ICONS;
 
   return (
     <div ref={timeContainerRef} className={TIME_CONTAINER} onWheel={onWheel}>
       <div>
         <TopControls materialIconsClass={materialIconsClass} />
         <Clock hours={hours} minutes={minutes} />
-        <BottomControls materialIconsClass={materialIconsClass} />
+        <BottomControls
+          materialIconsClass={materialIconsClass}
+          isPreviousHourDisabled={isPreviousHourDisabled}
+          isPreviousMinuteDisabled={isPreviousMinuteDisabled}
+        />
       </div>
     </div>
   );
@@ -117,8 +139,10 @@ Time.propTypes = {
   hours: PropTypes.number,
   minutes: PropTypes.number,
   selectedDate: PropTypes.instanceOf(Date),
-  onChange: PropTypes.func,
-  config: PropTypes.object,
+  onClockScroll: PropTypes.func,
+  materialIconsClass: PropTypes.string,
+  isPreviousHourDisabled: PropTypes.bool,
+  isPreviousMinuteDisabled: PropTypes.bool
 };
 
 export default Time;

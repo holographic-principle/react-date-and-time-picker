@@ -56,6 +56,16 @@ export class TargetManager {
   }
 }
 
+export function getDateFromYearMonthAndDay({ year, month, day }) {
+  const date = new Date();
+  date.setFullYear(year, month, day);
+  return date;
+}
+
+export function isBefore(date, referenceDate) {
+  return date < referenceDate;
+}
+
 export const getDefaultLineHeight = () => {
   const iframe = document.createElement('iframe');
   iframe.src = 'about:blank';
