@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {forwardRef} from 'react';
 import PropTypes from 'prop-types';
 import {MONTH_NAMES_SHORT} from './ui_strings';
 import {classes, Enum, isBefore, TargetManager} from './utils';
@@ -461,7 +461,9 @@ class DateTimePicker extends React.Component {
       config.containerStyle :
       {};
     return (
-      <div className={ROOT}
+      <div
+        ref={this.props.forwardedRef}
+        className={ROOT}
         onClick={this.onClick}
         style={containerStyle}
       >
@@ -519,6 +521,11 @@ DateTimePicker.propTypes = {
   date: PropTypes.instanceOf(Date),
   onChange: PropTypes.func,
   config: PropTypes.object,
+  forwardedRef: PropTypes.any
 };
 
-export default DateTimePicker;
+function DateTimePickerWithRef(props, ref) {
+  return <DateTimePicker forwardedRef={ref} {...props} />;
+}
+
+export default forwardRef(DateTimePickerWithRef);
