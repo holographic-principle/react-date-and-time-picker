@@ -41,6 +41,7 @@
 .dtp-header-group {
   display: flex;
   margin: 0 24px;
+  align-items: center;
 }
 
 .dtp-header .dtp-hover-span,
@@ -66,8 +67,8 @@
 .dtp-header-month,
 .dtp-header-year {
   font-weight: 600;
-  padding: 3px 8px;
-  width: 36px;
+  padding: 3px 0;
+  width: 40px;
   text-align: center;
 }
 
