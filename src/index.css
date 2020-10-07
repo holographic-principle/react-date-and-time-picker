@@ -39,6 +39,7 @@
 
 .dtp-header-group {
   display: flex;
+  height: 40px;
   margin: 0 24px;
   align-items: center;
 }
@@ -154,7 +155,6 @@
 
 .dtp-table .dtp-td-years,
 .dtp-table .dtp-td-months {
-  height: 28px;
   line-height: 28px;
   padding: 6px 10px;
   text-align: center;
